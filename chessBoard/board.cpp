@@ -8,6 +8,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <array>
+#include <vector>
 using namespace std;
 
 class Board{
@@ -88,6 +89,18 @@ class Board{
                     cout << "|";
                     Piece* piece = chessBoard[i][j];
                     cout << " " << piece -> pieceAscii() << " ";
+                }
+                cout << "|" << endl << "  +---+---+---+---+---+---+---+---+" << endl;
+            };
+            cout << "    A   B   C   D   E   F   G   H" << endl;
+        };
+
+
+        std::vector<int> getMoves(){
+            std::vector<int> finalArray;
+            for (int i = 0 ; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    std::vector<int> moves = chessBoard[i][j] -> getMoves(i, j, chessBoard);
                 }
                 cout << "|" << endl << "  +---+---+---+---+---+---+---+---+" << endl;
             };
