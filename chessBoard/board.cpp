@@ -81,6 +81,17 @@ class Board{
             return encoding;
         };
 
+        std::vector<int> getMoves(){
+            std::vector<int> finalArray;
+            for (int i = 0 ; i < 8; i++) {
+                for (int j = 0; j < 8; j++) {
+                    std::vector<int> moves = chessBoard[i][j] -> getMoves(i, j, chessBoard);
+                    finalArray.insert(finalArray.end(), moves.begin(), moves.end());
+                }
+            };
+            return finalArray;
+        };
+
         void printBoard(){
             cout << endl << "  +---+---+---+---+---+---+---+---+" << endl;
             for (int i = 0 ; i < 8; i++) {
@@ -94,19 +105,6 @@ class Board{
             };
             cout << "    A   B   C   D   E   F   G   H" << endl;
         };
-
-
-        std::vector<int> getMoves(){
-            std::vector<int> finalArray;
-            for (int i = 0 ; i < 8; i++) {
-                for (int j = 0; j < 8; j++) {
-                    std::vector<int> moves = chessBoard[i][j] -> getMoves(i, j, chessBoard);
-                }
-                cout << "|" << endl << "  +---+---+---+---+---+---+---+---+" << endl;
-            };
-            cout << "    A   B   C   D   E   F   G   H" << endl;
-        };
-
 };
 
 Piece* Board::b = new Piece();
