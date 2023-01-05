@@ -81,14 +81,24 @@ class Board{
             return encoding;
         };
 
-        std::vector<int> getMoves(){
-            std::vector<int> finalArray;
+        std::vector<int>* getMoves(bool turn){
+            int mask = 8;
+            std::vector<int>* finalArray = new std::vector<int>();
             for (int i = 0 ; i < 8; i++) {
                 for (int j = 0; j < 8; j++) {
-                    std::vector<int> moves = chessBoard[i][j] -> getMoves(i, j, chessBoard);
-                    finalArray.insert(finalArray.end(), moves.begin(), moves.end());
+                    Piece* piece = chessBoard[i][j];
+                    int encoding = piece -> pieceEnum();
+                    if (((mask ^ encoding) >> 3) == turn){
+                        std::vector<int>* moves = chessBoard[i][j] -> getMoves(i, j, chessBoard);
+                        finalArray->insert(finalArray->end(), moves->begin(), moves->end());
+                        delete moves;
+                    }
                 }
             };
+            for (int l = 0; l < finalArray->size(); l++){
+                std::cout << finalArray->at(l) << endl;;
+            } 
+            std::cout << std::endl;
             return finalArray;
         };
 
@@ -129,7 +139,8 @@ Piece* Board::plist[16] = {b, wp, wb, wkn, wr, wq, wkg, b,
 int main(){
     Board* b = new Board();
     b->printBoard();
-    std::array<long,4> encoding = b->encodeBoard();
-    Board* b_new = new Board(encoding);
-    b_new -> printBoard();
+    b->getMoves(1);
+    // std::array<long,4> encoding = b->encodeBoard();
+    // Board* b_new = new Board(encoding);
+    // b_new -> printBoard();
 };  
