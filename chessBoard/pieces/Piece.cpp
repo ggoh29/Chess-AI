@@ -2,10 +2,10 @@
 
 bool isSameTeam(bool colour, Piece* piece){
     int mask = 8;
-    return (((piece -> pieceEnum()) ^ mask) == colour);
+    return ((((piece -> pieceEnum()) & mask) >> 3) != colour);
 }
 
-char Piece::pieceEnum(){
+int Piece::pieceEnum(){
         return 0;
     };        
 
@@ -16,7 +16,7 @@ std::string Piece::pieceAscii(){
 int Piece::encodeMove(std::array<int, 4> move){
     int encodedMove = 0;
     for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 8) ^ move[i];
+        encodedMove = (encodedMove << 4) ^ move[i];
     }
     return encodedMove;
 };

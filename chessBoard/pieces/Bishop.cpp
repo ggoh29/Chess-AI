@@ -2,7 +2,12 @@
 
 Bishop::Bishop(bool colour) : colour(colour){}
 
-char Bishop::pieceEnum(){
+bool Bishop::isSameTeam(bool colour, Piece* piece){
+    int mask = 8;
+    return ((((piece -> pieceEnum()) & mask) >> 3) != colour);
+}
+
+int Bishop::pieceEnum(){
         return colour ? 2 : 10;
     };
     
@@ -13,12 +18,33 @@ std::string Bishop::pieceAscii(){
 int Bishop::encodeMove(std::array<int, 4> move){
     int encodedMove = 0;
     for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 8) ^ move[i];
+        encodedMove = (encodedMove << 4) ^ move[i];
     }
     return encodedMove;
 };
 
 std::vector<int>* Bishop::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard){
-    std::vector<int>* empty = new std::vector<int>();
-    return empty;
+    std::vector<int> *moves = new std::vector<int>();
+    for (int x = 0; x <= 1; x ++){
+        for (int y = 0; y <= 1; y++){
+            int xx = x ? i + 1 : i - 1;
+            int yy = y ? j + 1 : j - 1;
+            while (0 <= xx && xx < 8 && 0 <= yy && yy < 8){
+                bool cond = !isSameTeam(colour, chessBoard[xx][yy]);
+                if ((chessBoard[xx][yy] -> pieceEnum()) == 0 | cond){
+                    std::array<int, 4> move = {i, j, xx, yy};
+                    int moveEncoded = encodeMove(move);
+                    moves->push_back(moveEncoded);
+                    if (cond){
+                        break;
+                    }
+                    xx = x ? xx + 1 : xx - 1;
+                    yy = y ? yy + 1 : yy - 1;
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+    return moves;
 }; 

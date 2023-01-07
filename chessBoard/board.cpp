@@ -39,9 +39,9 @@ class Board{
                        {bp , bp , bp , bp , bp , bp , bp , bp },
                        {b  , b  , b  , b  , b  , b  , b  , b  },
                        {b  , b  , b  , b  , b  , b  , b  , b  },
-                       {b  , b  , b  , b  , b  , b  , b  , b  },
-                       {b  , b  , b  , b  , b  , b  , b  , b  },
-                       {wp , wp , wp , wp , wp , wp , wp , wp },
+                       {b  , b  , b  , wp  , b  , b  , b  , b  },
+                       {b  , b  , bp  , b  , b  , b  , b  , b  },
+                       {wp , wp , wp , b , wp , wp , wp , wp },
                        {wr , wkn, wb , wkg, wq , wb , wkn, wr }}}
         {}
 
@@ -61,6 +61,15 @@ class Board{
         ~Board() {
             delete &chessBoard;
             cout << "Deleted Board" << endl;
+        }
+
+        int getHash(){
+            int hash = 0;
+            std::array<long,4> encoding = encodeBoard();
+            for (int i = 0; i < 4; i++){
+                hash = (hash + (324723947 + encoding[i])) ^ 93485734985;
+            }
+            return hash;
         }
 
         std::array<long,4> encodeBoard(){
@@ -89,7 +98,7 @@ class Board{
                     Piece* piece = chessBoard[i][j];
                     int encoding = piece -> pieceEnum();
                     if (((mask ^ encoding) >> 3) == turn){
-                        std::vector<int>* moves = chessBoard[i][j] -> getMoves(i, j, chessBoard);
+                        std::vector<int>* moves = piece -> getMoves(i, j, chessBoard);
                         finalArray->insert(finalArray->end(), moves->begin(), moves->end());
                         delete moves;
                     }
@@ -98,12 +107,12 @@ class Board{
             for (int l = 0; l < finalArray->size(); l++){
                 std::cout << finalArray->at(l) << endl;;
             } 
-            std::cout << std::endl;
+            std::cout <<  finalArray->size() << std::endl;
             return finalArray;
         };
 
         void printBoard(){
-            cout << endl << "  +---+---+---+---+---+---+---+---+" << endl;
+            cout << "\033c" << "  +---+---+---+---+---+---+---+---+" << endl;
             for (int i = 0 ; i < 8; i++) {
                 cout << (8 - i) << " ";
                 for (int j = 0; j < 8; j++) {
@@ -140,7 +149,6 @@ int main(){
     Board* b = new Board();
     b->printBoard();
     b->getMoves(1);
-    // std::array<long,4> encoding = b->encodeBoard();
     // Board* b_new = new Board(encoding);
     // b_new -> printBoard();
 };  
