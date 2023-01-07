@@ -22,7 +22,7 @@ int Queen::encodeMove(std::array<int, 4> move){
     return encodedMove;
 };
 
-std::vector<int>* Queen::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard){
+std::vector<int>* Queen::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
     for (int x = -1; x <= 1; x ++){
         for (int y = -1; y <= 1; y++){

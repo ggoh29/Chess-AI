@@ -9,7 +9,7 @@ class Knight:public Piece{
     int pieceEnum();     
     std::string pieceAscii();
     int encodeMove(std::array<int, 4> move);
-    std::vector<int>* getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard);  
+    std::vector<int>* getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove);  
 };
 
 #endif

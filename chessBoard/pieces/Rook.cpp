@@ -23,7 +23,7 @@ int Rook::encodeMove(std::array<int, 4> move){
     return encodedMove;
 };
 
-std::vector<int>* Rook::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard){
+std::vector<int>* Rook::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     Piece* piece = chessBoard[i][j];
     std::vector<int> *moves = new std::vector<int>();
     int directions[4][2] = {{+1, 0}, {-1, 0}, {0, +1}, {0, -1}};

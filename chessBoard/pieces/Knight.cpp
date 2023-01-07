@@ -18,7 +18,7 @@ int Knight::encodeMove(std::array<int, 4> move){
     return encodedMove;
 };
 
-std::vector<int>* Knight::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard){
+std::vector<int>* Knight::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     std::vector<int>* empty = new std::vector<int>();
     return empty;
 }; 

@@ -1,5 +1,7 @@
 #include "Piece.h"
 
+Piece::Piece(){};
+
 bool isSameTeam(bool colour, Piece* piece){
     int mask = 8;
     return ((((piece -> pieceEnum()) & mask) >> 3) != colour);
@@ -21,7 +23,7 @@ int Piece::encodeMove(std::array<int, 4> move){
     return encodedMove;
 };
 
-std::vector<int>* Piece::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard){
+std::vector<int>* Piece::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     std::vector<int>* empty = new std::vector<int>();
     return empty;
 }; 
