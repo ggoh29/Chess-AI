@@ -3,13 +3,13 @@
 
 Board::Board()
 : chessBoard {{{br , bkn, bb , bq, bkg , bb , bkn, br }, 
-                {bp , bp , bp , bp , bp , bp , bp , bp },
-                {b  , b  , b  , b  , b  , b  , b  , b  },
-                {b  , b  , b  , b  , b  , b  , b  , b  },
-                {b  , b  , b  , b  , b  , b  , b  , b  },
-                {b  , b  , b  , b  , b  , b  , b  , b  },
-                {wp , wp , wp , wp , wp , wp , wp , wp },
-                {wr , wkn, wb , wq, wkg , wb , wkn, wr }}},
+               {bp , bp , bp , bp , bp , bp , bp , bp },
+               {b  , b  , b  , b  , b  , b  , b  , b  },
+               {b  , b  , b  , b  , b  , b  , b  , b  },
+               {b  , b  , b  , b  , b  , b  , b  , b  },
+               {b  , b  , b  , b  , b  , b  , b  , b  },
+               {wp , wp , wp , wp , wp , wp , wp , wp },
+               {wr , wkn, wb , wq, wkg , wb , wkn, wr }}},
 bkgHasMoved{false},
 br1HasMoved{false},
 br2HasMoved{false},
@@ -134,10 +134,10 @@ std::vector<int>* Board::getMoves(bool turn, int previousMove){
             }
         }
     };
-    for (int l = 0; l < finalArray->size(); l++){
-        std::cout << finalArray->at(l) << std::endl;;
-    } 
-    std::cout <<  finalArray->size() << std::endl;
+    // for (int l = 0; l < finalArray->size(); l++){
+    //     std::cout << finalArray->at(l) << std::endl;;
+    // } 
+    // std::cout <<  finalArray->size() << std::endl;
     return finalArray;
 };
 

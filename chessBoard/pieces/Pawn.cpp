@@ -84,7 +84,7 @@ std::vector<int>* Pawn::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
     if (i == (colour ? 1 : 6)){
         if ((chessBoard[colour ? i - 1 : i + 1][j] -> pieceEnum()) == 0){
             int mask =colour ? 0 : 8;
-            for (int x = 1; x < 7; x++){
+            for (int x = 2; x < 7; x++){
                 std::array<int, 4> move = {i, j, colour ? i - 1 : i + 1, j};
                 moves->push_back(encodePromotion(move, mask ^ x));
             }
