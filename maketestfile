@@ -1,0 +1,3 @@
+cd chessBoard/tests; cmake . ;  cmake --build . ; ctest --rerun-failed --output-on-failure 
+shopt -s extglob 
+cd chessBoard/tests; rm -f */ ; rm !('boardTests.cpp' | 'CMakeLists.txt')
