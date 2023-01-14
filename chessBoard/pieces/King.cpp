@@ -1,5 +1,4 @@
 #include "King.h"
-#include <iostream>
 
 King::King(bool colour):colour(colour),mv(new Move()){}
 
@@ -32,7 +31,7 @@ std::vector<int>* King::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
             moves->push_back(moveEncoded);
         }
     }
-    std::cout << i << " " << j << std::endl;
+
     bool inCastlingSpot = false;
     int castlingRow = colour ? 7 : 0;
     if ((i == castlingRow) && (j == 4)){
