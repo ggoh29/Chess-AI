@@ -12,6 +12,7 @@
 #include <array>
 #include <vector>
 #include <cassert>
+#include <string>
 
 Piece* b = new Piece();
 
@@ -33,8 +34,8 @@ Piece* plist[16] = {b, wp, wb, wkn, wr, wq, wkg, b,
                     b, bp, bb, bkn, br, bq, bkg, b};
 
 
-void en_passant_works_as_intended(){
-    std::cout << "Testing: en passant test returns 3 moves" << std::endl;
+void en_passant_works_as_intended(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     Move* mover = new Move();
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
      {b  , b  , b  , b  , b  , b  , b  , b  }, 
@@ -51,14 +52,14 @@ void en_passant_works_as_intended(){
     int encodedMove = mover->encodeMove(move);
     std::vector<int>* moves = b->getMoves(1, encodedMove);
     int movesSize = moves->size();
-    std::cout << "Testing: en passant test actually returned " << movesSize << " moves." << std::endl;
-    assert (movesSize == 3);
+    std::cout << "Testing: " << test << " test actually returned " << movesSize << " moves." << std::endl;
+    assert (movesSize == mvs);
 }
 
-void promotion_works_as_intended(){
-    std::cout << "Testing: promotion tests returns 10 moves" << std::endl;
+void promotion_works_as_intended(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , bp , bp , bp , b  , b  }, 
+     {b  , b  , b  , bp , b ,  bp , b  , b  }, 
      {b  , b  , b  , b  , wp , b  , b  , b  },
      {b  , b  , b  , b  , b  , b  , b  , b  },
      {b  , b  , b  , b  , b  , b  , b  , b  },
@@ -70,14 +71,34 @@ void promotion_works_as_intended(){
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
     int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test actually returned " << movesSize << " moves." << std::endl;
+    assert (movesSize == mvs);
+}
+
+void pawn_moves_white_works_as_intended(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+     {b  , b  , b  , bp , b ,  b , b  , b  }, 
+     {b  , b  , b  , b  , wp , b  , b  , b  },
+     {b  , bp , bp , b  , b  , b  , b  , b  },
+     {b  , wp , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , bp , b  , b  , b  },
+     {b  , b  , b  , wp , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  }
+    }};
+    Board* b = new Board(chessBoard);
+    std::vector<int>* moves = b->getMoves(1, 0);
+    int movesSize = moves->size();
     std::cout << "Testing: promotion tests actually returned " <<  movesSize << " moves" << std::endl;
-    assert (movesSize == 10);
+    assert (movesSize == mvs);
 }
 
 
 
 int main(){
-    en_passant_works_as_intended();
-    promotion_works_as_intended();
+    en_passant_works_as_intended("white en passant", 3);
+    promotion_works_as_intended("white promotion", 15);
+    pawn_moves_white_works_as_intended("white pawn", 14);
     return 0;
 }
