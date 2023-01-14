@@ -90,7 +90,7 @@ void pawn_moves_white_works_as_intended(std::string test, int mvs){
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
     int movesSize = moves->size();
-    std::cout << "Testing: promotion tests actually returned " <<  movesSize << " moves" << std::endl;
+    std::cout << "Testing: " << test << " test actually returned " << movesSize << " moves." << std::endl;
     assert (movesSize == mvs);
 }
 
@@ -109,7 +109,45 @@ void pawn_moves_black_works_as_intended(std::string test, int mvs){
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(0, 0);
     int movesSize = moves->size();
-    std::cout << "Testing: promotion tests actually returned " <<  movesSize << " moves" << std::endl;
+    std::cout << "Testing: " << test << " test actually returned " << movesSize << " moves." << std::endl;
+    assert (movesSize == mvs);
+}
+
+void knight_moves_white_works_as_intended(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+     {b  , b  , b  , b  , b  , b  , b  , b  }, 
+     {b  , b  , b  , wkn, b  , bp , b  , b  },
+     {b  , bp , b  , b  , b  , wp , b  , b  },
+     {b  , wp , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  }
+    }};
+    Board* b = new Board(chessBoard);
+    std::vector<int>* moves = b->getMoves(1, 0);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test actually returned " << movesSize << " moves." << std::endl;
+    assert (movesSize == mvs);
+}
+
+void knight_moves_black_works_as_intended(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+     {b  , b  , b  , b  , b  , b  , b  , b  }, 
+     {b  , b  , b  , bkn, b  , bp , b  , b  },
+     {b  , bp , b  , b  , b  , wp , b  , b  },
+     {b  , wp , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  }
+    }};
+    Board* b = new Board(chessBoard);
+    std::vector<int>* moves = b->getMoves(0, 0);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test actually returned " << movesSize << " moves." << std::endl;
     assert (movesSize == mvs);
 }
 
@@ -120,5 +158,7 @@ int main(){
     promotion_works_as_intended("white promotion", 15);
     pawn_moves_white_works_as_intended("white pawn", 14);
     pawn_moves_black_works_as_intended("black pawn", 12);
+    knight_moves_white_works_as_intended("white knight", 5);
+    knight_moves_black_works_as_intended("black knight", 5);
     return 0;
 }
