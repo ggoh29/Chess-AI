@@ -14,7 +14,8 @@ add_library(ROOK ../pieces/Rook.h ../pieces/Rook.cpp)
 add_library(KNIGHT ../pieces/Knight.h ../pieces/Knight.cpp)
 add_library(PAWN ../pieces/Pawn.h ../pieces/Pawn.cpp)
 add_library(PIECE ../pieces/Piece.h ../pieces/Piece.cpp)
+add_library(MOVES ../moves/Moves.h ../moves/Moves.cpp)
 
-target_link_libraries(boardTests BOARD PIECE PAWN KNIGHT BISHOP ROOK QUEEN KING)
+target_link_libraries(boardTests BOARD PIECE PAWN KNIGHT BISHOP ROOK QUEEN KING MOVES)
 
 add_test(BOARDTESTS boardTests)

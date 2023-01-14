@@ -1,6 +1,6 @@
 #include "Piece.h"
 
-Piece::Piece(){};
+Piece::Piece():mv(new Move()){};
 
 bool isSameTeam(bool colour, Piece* piece){
     int mask = 8;
@@ -14,14 +14,6 @@ int Piece::pieceEnum(){
 std::string Piece::pieceAscii(){
         return " ";
     };
-
-int Piece::encodeMove(std::array<int, 4> move){
-    int encodedMove = 0;
-    for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 4) ^ move[i];
-    }
-    return encodedMove;
-};
 
 std::vector<int>* Piece::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     std::vector<int>* empty = new std::vector<int>();

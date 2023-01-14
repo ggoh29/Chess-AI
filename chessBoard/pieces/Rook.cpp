@@ -1,6 +1,6 @@
 #include "Rook.h"
 
-Rook::Rook(bool colour) : colour(colour){}
+Rook::Rook(bool colour) : colour(colour), mv(new Move()){}
 
 bool Rook::isSameTeam(bool colour, Piece* piece){
     int mask = 8;
@@ -15,14 +15,6 @@ std::string Rook::pieceAscii(){
         return colour ? "♜" : "♖";
     };
 
-int Rook::encodeMove(std::array<int, 4> move){
-    int encodedMove = 0;
-    for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 4) ^ move[i];
-    }
-    return encodedMove;
-};
-
 std::vector<int>* Rook::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     Piece* piece = chessBoard[i][j];
     std::vector<int> *moves = new std::vector<int>();
@@ -33,7 +25,7 @@ std::vector<int>* Rook::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
         for (;0 <= xx && xx < 8 && 0 <= yy && yy < 8;){
             if ((chessBoard[xx][yy] -> pieceEnum()) == 0 | !isSameTeam(colour, chessBoard[xx][yy])){
                 std::array<int, 4> move = {i, j, xx, yy};
-                int moveEncoded = piece->encodeMove(move);
+                int moveEncoded = mv->encodeMove(move);
                 moves->push_back(moveEncoded);
                 xx += direction[0];
                 yy += direction[1];

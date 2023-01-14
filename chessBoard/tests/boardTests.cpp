@@ -5,6 +5,7 @@
 #include "../pieces/Rook.h"
 #include "../pieces/Queen.h"
 #include "../pieces/King.h"
+#include "../moves/Moves.h"
 #include "../Board.h"
 #include <stdio.h>
 #include <iostream>
@@ -34,6 +35,7 @@ Piece* plist[16] = {b, wp, wb, wkn, wr, wq, wkg, b,
 
 void en_passant_works_as_intended(){
     std::cout << "Testing: en passant test returns 3 moves" << std::endl;
+    Move* mover = new Move();
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
      {b  , b  , b  , b  , b  , b  , b  , b  }, 
      {b  , b  , b  , b  , b  , b  , b  , b  },
@@ -46,7 +48,7 @@ void en_passant_works_as_intended(){
     }};
     Board* b = new Board(chessBoard);
     std::array<int, 4> move = {1, 4, 3, 4};
-    int encodedMove = wp->encodeMove(move);
+    int encodedMove = mover->encodeMove(move);
     std::vector<int>* moves = b->getMoves(1, encodedMove);
     int movesSize = moves->size();
     std::cout << "Testing: en passant test actually returned " << movesSize << " moves." << std::endl;

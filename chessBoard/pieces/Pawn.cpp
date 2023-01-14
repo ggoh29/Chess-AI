@@ -1,7 +1,7 @@
 #include "Pawn.h"
 #include <iostream>
 
-Pawn::Pawn(bool colour) : colour(colour){}
+Pawn::Pawn(bool colour) : colour(colour), mv(new Move()){}
 
 
 bool Pawn::isSameTeam(bool colour, Piece* piece){
@@ -17,29 +17,6 @@ std::string Pawn::pieceAscii(){
         return colour ? "♟︎" : "♙";
     };
 
-int Pawn::encodeMove(std::array<int, 4> move){
-    int encodedMove = 0;
-    for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 4) ^ move[i];
-    }
-    return encodedMove;
-};
-
-int Pawn::encodeEnPassant(std::array<int, 4> move){
-    int encodedMove = 1 << 31;
-    for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 4) ^ move[i];
-    }
-    return encodedMove;
-};
-
-int Pawn::encodePromotion(std::array<int, 4> move, int promotedPiece){
-    int encodedMove = 1 << 30;
-    for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 4) ^ move[i];
-    }
-    return encodedMove;
-};
 
 std::vector<int>* Pawn::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
@@ -49,7 +26,7 @@ std::vector<int>* Pawn::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
     for (int k = colour ? i - 1 : i + 1 ; k != i + colourMultiplier ; colour ? k-- : k++){
         if ((chessBoard[k][j] -> pieceEnum()) == 0){
             std::array<int, 4> move = {i, j, k, j};
-            int moveEncoded = encodeMove(move);
+            int moveEncoded = mv->encodeMove(move);
             moves->push_back(moveEncoded);
         } else {
             break;
@@ -62,7 +39,7 @@ std::vector<int>* Pawn::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
         if (0 <= x && x < 8 && 0 <= y && y < 8){
             if (!isSameTeam(colour, chessBoard[x][y])){
                 std::array<int, 4> move = {i, j, x, y};
-                int moveEncoded = encodeMove(move);
+                int moveEncoded = mv->encodeMove(move);
                 moves->push_back(moveEncoded);
             }
         }
@@ -73,9 +50,9 @@ std::vector<int>* Pawn::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
             int y = k ? j - 1 : j + 1;
             if (0 <= y && y < 8){
                 std::array<int, 4> enPassantPawnMove = {colour ? 1 : 6, y, i, y};
-                if (previousMove == encodeMove(enPassantPawnMove) && chessBoard[i][y]->pieceEnum() == (colour ? 9 : 1)){
+                if (previousMove == mv->encodeMove(enPassantPawnMove) && chessBoard[i][y]->pieceEnum() == (colour ? 9 : 1)){
                     std::array<int, 4> move = {i, j, colour ? i - 1 : i + 1, y};
-                    moves->push_back(encodeEnPassant(move));
+                    moves->push_back(mv->encodeEnPassant(move));
                }
             }
         }
@@ -86,7 +63,7 @@ std::vector<int>* Pawn::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
             int mask =colour ? 0 : 8;
             for (int x = 2; x < 7; x++){
                 std::array<int, 4> move = {i, j, colour ? i - 1 : i + 1, j};
-                moves->push_back(encodePromotion(move, mask ^ x));
+                moves->push_back(mv->encodePromotion(move, mask ^ x));
             }
         }
     }
