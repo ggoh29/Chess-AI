@@ -17,6 +17,7 @@ Queen* bq = new Queen(0);
 King* bkg = new King(0);
 
 int main(){
+    Move* mv = new Move();
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
      {b  , b  , b  , b  , b  , b  , b  , b  }, 
      {b  , b  , b  , b  , b  , b  , b  , b  },
@@ -29,7 +30,7 @@ int main(){
     }};
     Board* b = new Board(chessBoard);
     std::array<int, 4> move = {1, 4, 3, 4};
-    int encodedMove = wp->encodeMove(move);
+    int encodedMove = mv->encodeMove(move);
     std::vector<int>* moves = b->getMoves(1, encodedMove);
     std::cout << moves->size() << std::endl;
     return true;

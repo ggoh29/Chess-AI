@@ -3,17 +3,20 @@
 Rook::Rook(bool colour) : colour(colour), mv(new Move()){}
 
 bool Rook::isSameTeam(bool colour, Piece* piece){
+    if (piece->pieceEnum() == 0){
+        return true;
+    }
     int mask = 8;
     return ((((piece -> pieceEnum()) & mask) >> 3) != colour);
 }
 
 int Rook::pieceEnum(){
         return colour ? 4 : 12;
-    };
+};
 
 std::string Rook::pieceAscii(){
         return colour ? "♜" : "♖";
-    };
+};
 
 std::vector<int>* Rook::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     Piece* piece = chessBoard[i][j];

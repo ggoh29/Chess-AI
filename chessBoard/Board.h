@@ -7,6 +7,7 @@
 #include "pieces/Rook.h"
 #include "pieces/Queen.h"
 #include "pieces/King.h"
+#include  "moves/Moves.h"
 #include <stdio.h>
 #include <iostream>
 #include <array>

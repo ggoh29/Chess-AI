@@ -5,6 +5,9 @@ Pawn::Pawn(bool colour) : colour(colour), mv(new Move()){}
 
 
 bool Pawn::isSameTeam(bool colour, Piece* piece){
+    if (piece->pieceEnum() == 0){
+        return true;
+    }
     int mask = 8;
     return ((((piece -> pieceEnum()) & mask) >> 3) != colour);
 }

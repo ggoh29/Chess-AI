@@ -9,6 +9,7 @@ class King:public Piece{
   public:
     King(bool colour);
     int pieceEnum();     
+    bool isSameTeam(bool colour, Piece* piece);
     std::string pieceAscii();
     std::vector<int>* getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove);  
 };

@@ -2,7 +2,7 @@
 #define MOVES_H
 #include <array>
 
-class Move{   
+class Move{
   bool colour;
   public:
     Move(); 

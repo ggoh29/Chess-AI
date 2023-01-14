@@ -94,11 +94,31 @@ void pawn_moves_white_works_as_intended(std::string test, int mvs){
     assert (movesSize == mvs);
 }
 
+void pawn_moves_black_works_as_intended(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+     {b  , b  , b  , b  , b  , b  , b  , b  }, 
+     {b  , b  , b  , bp , b  , b  , b  , b  },
+     {b  , bp , bp , b  , wp , b  , b  , b  },
+     {b  , wp , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , bp , b  , b  , b  },
+     {b  , b  , bp , wp , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  }
+    }};
+    Board* b = new Board(chessBoard);
+    std::vector<int>* moves = b->getMoves(0, 0);
+    int movesSize = moves->size();
+    std::cout << "Testing: promotion tests actually returned " <<  movesSize << " moves" << std::endl;
+    assert (movesSize == mvs);
+}
+
 
 
 int main(){
     en_passant_works_as_intended("white en passant", 3);
     promotion_works_as_intended("white promotion", 15);
     pawn_moves_white_works_as_intended("white pawn", 14);
+    pawn_moves_black_works_as_intended("black pawn", 12);
     return 0;
 }

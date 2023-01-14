@@ -2,18 +2,21 @@
 
 Bishop::Bishop(bool colour) : colour(colour), mv(new Move()){}
 
+int Bishop::pieceEnum(){
+        return colour ? 2 : 10;
+};
+
 bool Bishop::isSameTeam(bool colour, Piece* piece){
+    if (piece->pieceEnum() == 0){
+        return true;
+    }
     int mask = 8;
     return ((((piece -> pieceEnum()) & mask) >> 3) != colour);
 }
-
-int Bishop::pieceEnum(){
-        return colour ? 2 : 10;
-    };
     
 std::string Bishop::pieceAscii(){
         return colour ? "♝" : "♗";
-    };
+};
 
 std::vector<int>* Bishop::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
