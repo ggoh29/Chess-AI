@@ -303,6 +303,52 @@ void king_moves_black_works_as_intended(std::string test, int mvs){
     assert (movesSize == mvs);
 }
 
+void castle_white_not_valid_test1(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+     {br , b  , b  , b  , bkg, b  , b  , br }, 
+     {bp , b  , b  , b  , wp , b  , b  , bp },
+     {wp , b  , b  , b  , b  , b  , b  , wp },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {bp , b  , b  , b  , b  , b  , b  , bp },
+     {wp , b  , b  , b  , bp , b  , b  , wp },
+     {wr , b  , b  , b  , wkg, b  , b  , wr }
+    }};
+    Board* b = new Board(chessBoard);
+    std::vector<int>* moves = b->getMoves(1, 0);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
+    std::vector<int>* validMoves = b->getValidMoves(1, 0);
+    int validMovesSize = validMoves->size();
+    std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
+    assert (movesSize == mvs);
+    assert (validMovesSize == mvs - 4);
+}
+
+void castle_black_not_valid_test1(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+     {br , b  , b  , b  , bkg, b  , b  , br }, 
+     {bp , b  , b  , b  , wp , b  , b  , bp },
+     {wp , b  , b  , b  , b  , b  , b  , wp },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {b  , b  , b  , b  , b  , b  , b  , b  },
+     {bp , b  , b  , b  , b  , b  , b  , bp },
+     {wp , b  , b  , b  , bp , b  , b  , wp },
+     {wr , b  , b  , b  , wkg, b  , b  , wr }
+    }};
+    Board* b = new Board(chessBoard);
+    std::vector<int>* moves = b->getMoves(0, 0);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
+    std::vector<int>* validMoves = b->getValidMoves(0, 0);
+    int validMovesSize = validMoves->size();
+    std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
+    assert (movesSize == mvs);
+    assert (validMovesSize == mvs - 4);
+}
+
 int main(){
     en_passant_works_as_intended("white en passant", 3);
     promotion_works_as_intended("white promotion", 15);
@@ -318,5 +364,7 @@ int main(){
     queen_moves_black_works_as_intended("black queen", 18);
     king_moves_white_works_as_intended("white king", 12);
     king_moves_black_works_as_intended("black king", 12);
+    castle_white_not_valid_test1("white king castling", 12);
+    castle_black_not_valid_test1("black king castling", 12);
     return 0;
 }

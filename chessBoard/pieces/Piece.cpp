@@ -2,7 +2,7 @@
 
 Piece::Piece():mv(new Move()){};
 
-bool isSameTeam(bool colour, Piece* piece){
+bool Piece::isSameTeam(bool colour, Piece* piece){
     if (piece->pieceEnum() == 0){
         return true;
     }

@@ -12,7 +12,7 @@
 #include <iostream>
 #include <array>
 #include <vector>
-
+#include <algorithm>
 
 class Board{
 
@@ -69,13 +69,12 @@ class Board{
         );
 
         ~Board();
-
         int getHash();
-
+        bool isValidPosforKing(int i_king, int j_king, bool turn);
         std::array<long,4> encodeBoard();
-
         std::vector<int>* getMoves(bool turn, int previousMove);
-
+        std::vector<int>* getValidMoves(bool turn, int previousMove);
+        Board* makeMove(bool turn, int move);
         void printBoard();
 };
 #endif
