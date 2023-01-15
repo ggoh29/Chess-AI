@@ -71,7 +71,7 @@ class Board{
         );
 
         ~Board();
-        int getHash();
+        long getHash();
         std::string getString();
         std::array<long,4> encodeBoard();
         bool isValidPosforKing(int i_king, int j_king, bool turn);

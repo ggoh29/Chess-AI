@@ -42,7 +42,6 @@ Board::Board(std::string encoding){
     std::strcpy(a, encoding.c_str());
     for (int i = 0 ; i < 8; i++){
         for (int j = 0; j < 4; j++) {
-            std::cout << (int) a[(i + j * 8) + 1] << std::endl;
             chessBoard[i][j * 2] =  plist[(int) a[(i + j * 8) + 1] & mask];
             chessBoard[i][j * 2 + 1] = plist[(int) (a[(i + j * 8) + 1]>>4) & mask];
         }
@@ -112,11 +111,13 @@ Board::~Board() {
     std::cout << "Deleted Board" << std::endl;
 }
 
-int Board::getHash(){
-    int hash = 0;
+long Board::getHash(){
+    long hash = 0;
+    long p1 = 0b0110000100100110101100011011101011011100010011000110010011111110;
+    long p2 = 0b1011010111010011110001000001001000001011101101110111011001001011;
     std::array<long,4> encoding = encodeBoard();
     for (int i = 0; i < 4; i++){
-        hash = (hash + (324723947 + encoding[i])) ^ 93485734985;
+        hash = (hash + (p1 + encoding[i])) ^ p2;
     }
     return hash;
 }
@@ -132,8 +133,7 @@ std::string Board::getString(){
 	std::string str = ""; 
 	for (int x = 0; x < 33; x++) { 
 		str = str + s[x]; 
-	} 
-    std::cout << str << std::endl;
+	}
     return str;
 }
 
@@ -150,8 +150,6 @@ std::array<long,4> Board::encodeBoard(){
             encoding[(i / 2)] = (encoding[(i / 2)] << 4) ^ e;
         }
     }
-    std::cout << std::endl;
-
     return encoding;
 };
 

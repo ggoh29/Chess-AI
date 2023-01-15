@@ -13,6 +13,8 @@
 #include <vector>
 #include <cassert>
 #include <string>
+#include <unordered_set>
+#include <map>
 
 Piece* b = new Piece();
 
@@ -349,6 +351,42 @@ void castle_black_not_valid_test1(std::string test, int mvs){
     assert (validMovesSize == mvs - 4);
 }
 
+std::unordered_set<long>* getMovesAtDepthN(Board* board, bool turn, int depth, int previousMove){
+    std::unordered_set<long>* results = new std::unordered_set<long>();
+    if (depth == 0){
+        return new std::unordered_set<long>({board->getHash()});
+    } else {
+        std::vector<int>* validMoves = board->getValidMoves(turn, previousMove);
+        for (auto validMove : *validMoves){
+            Board* b_temp = board->makeMove(turn, validMove);
+            std::unordered_set<long>* s = getMovesAtDepthN(b_temp, !turn, depth-1, validMove);
+            results->insert(s->begin(), s->end());
+            delete s;
+        }
+        delete validMoves;
+    }
+    return results;
+}
+
+void correct_number_of_starting_moves_at_depth_n_test(int n, int size){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
+        {bp , bp , bp , bp , bp , bp , bp , bp },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {wp , wp , wp , wp , wp , wp , wp , wp },
+        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    }};
+    Board* b = new Board(chessBoard);
+    std::unordered_set<long>* noOfMoves = getMovesAtDepthN(b, 1, n, 0);
+    int actualSize = noOfMoves->size();
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
 int main(){
     en_passant_works_as_intended("white en passant", 3);
     promotion_works_as_intended("white promotion", 15);
@@ -366,5 +404,7 @@ int main(){
     king_moves_black_works_as_intended("black king", 12);
     castle_white_not_valid_test1("white king castling", 12);
     castle_black_not_valid_test1("black king castling", 12);
+    correct_number_of_starting_moves_at_depth_n_test(1, 20);
+    correct_number_of_starting_moves_at_depth_n_test(2, 400);
     return 0;
 }
