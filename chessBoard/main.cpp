@@ -18,20 +18,17 @@ King* bkg = new King(0);
 
 int main(){
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {br , b  , b  , b  , bkg, b  , b  , br }, 
-     {bp , b  , b  , b  , wp , b  , b  , bp },
-     {wp , b  , b  , b  , b  , b  , b  , wp },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {bp , b  , b  , b  , b  , b  , b  , bp },
-     {wp , b  , b  , b  , bp , b  , b  , wp },
-     {wr , b  , b  , b  , wkg, b  , b  , wr }
+        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
+        {bp , bp , bp , bp , bp , bp , bp , bp },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {wp , wp , wp , wp , wp , wp , wp , wp },
+        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
     }};
     Board* b = new Board(chessBoard);
-    std::vector<int>* moves = b->getMoves(1, 0);
-    int movesSize = moves->size();
-    std::cout << "Testing: test returned " << movesSize << " moves." << std::endl;
-    std::vector<int>* validMoves = b->getValidMoves(1, 0);
-    int validMovesSize = validMoves->size();
-    std::cout << "Testing: test returned " << validMovesSize << " valid moves." << std::endl;
+    std::string encoding = b->getString();
+    Board* b2 = new Board(encoding);
+    b2->printBoard();
 };  

@@ -13,6 +13,7 @@
 #include <array>
 #include <vector>
 #include <algorithm>
+#include <cstring>
 
 class Board{
 
@@ -47,6 +48,7 @@ class Board{
         Board();
 
         Board(std::array<long,4> encoding);
+        Board(std::string encoding);
 
         Board(std::array<long,4> encoding, 
         bool bkgHasMoved,
@@ -70,8 +72,9 @@ class Board{
 
         ~Board();
         int getHash();
-        bool isValidPosforKing(int i_king, int j_king, bool turn);
+        std::string getString();
         std::array<long,4> encodeBoard();
+        bool isValidPosforKing(int i_king, int j_king, bool turn);
         std::vector<int>* getMoves(bool turn, int previousMove);
         std::vector<int>* getValidMoves(bool turn, int previousMove);
         Board* makeMove(bool turn, int move);

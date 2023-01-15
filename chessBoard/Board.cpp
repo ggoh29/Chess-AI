@@ -36,6 +36,25 @@ Board::Board(std::array<long,4> encoding)
     }
 }
 
+Board::Board(std::string encoding){
+    int mask = 15;
+    char* a = new char[34];
+    std::strcpy(a, encoding.c_str());
+    for (int i = 0 ; i < 8; i++){
+        for (int j = 0; j < 4; j++) {
+            std::cout << (int) a[(i + j * 8) + 1] << std::endl;
+            chessBoard[i][j * 2] =  plist[(int) a[(i + j * 8) + 1] & mask];
+            chessBoard[i][j * 2 + 1] = plist[(int) (a[(i + j * 8) + 1]>>4) & mask];
+        }
+    }
+    this->bkgHasMoved = (a[1] & (1 >> 5)) > 0;
+    this->br1HasMoved = (a[1] & (1 >> 4)) > 0;
+    this->br2HasMoved = (a[1] & (1 >> 3)) > 0;
+    this->wkgHasMoved = (a[1] & (1 >> 2)) > 0;
+    this->wr1HasMoved = (a[1] & (1 >> 1)) > 0;
+    this->wr2HasMoved = (a[1] & (1)) > 0;
+}
+
 Board::Board(std::array<long,4> encoding, 
 bool bkgHasMoved,
 bool br1HasMoved,
@@ -101,6 +120,40 @@ int Board::getHash(){
     }
     return hash;
 }
+
+std::string Board::getString(){
+    char s[33];
+    for (int i = 0 ; i < 8; i++){
+        for (int j = 0; j < 4; j++) {
+            s[(i + j * 8) + 1] = ((chessBoard[i][j*2]->pieceEnum() & 15) << 4) + (chessBoard[i][j*2+1]->pieceEnum() & 15);
+        }
+    }
+    s[0] = (bkgHasMoved << 5) + (br1HasMoved << 4) + (br2HasMoved << 3) + (wkgHasMoved << 2) + (wr1HasMoved << 1) + wr2HasMoved;
+	std::string str = ""; 
+	for (int x = 0; x < 33; x++) { 
+		str = str + s[x]; 
+	} 
+    std::cout << str << std::endl;
+    return str;
+}
+
+std::array<long,4> Board::encodeBoard(){
+    long firstQuarter = 0;
+    long secondQuarter = 0;
+    long thirdQuarter = 0;
+    long fourthQuarter = 0;
+    std::array<long,4> encoding {firstQuarter, secondQuarter, thirdQuarter, fourthQuarter};
+    for (int i = 0 ; i < 8; i++){
+        for (int j = 0; j < 8; j++) {
+            Piece* piece = chessBoard[i][j];
+            char e = piece -> pieceEnum();
+            encoding[(i / 2)] = (encoding[(i / 2)] << 4) ^ e;
+        }
+    }
+    std::cout << std::endl;
+
+    return encoding;
+};
 
 bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
     if (i_king < 0 || i_king > 7 || j_king < 0 || j_king > 7){
@@ -168,24 +221,6 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
     }
     return true;
 }
-
-std::array<long,4> Board::encodeBoard(){
-    long firstQuarter = 0;
-    long secondQuarter = 0;
-    long thirdQuarter = 0;
-    long fourthQuarter = 0;
-    std::array<long,4> encoding {firstQuarter, secondQuarter, thirdQuarter, fourthQuarter};
-    for (int i = 0 ; i < 8; i++){
-        for (int j = 0; j < 8; j++) {
-            Piece* piece = chessBoard[i][j];
-            char e = piece -> pieceEnum();
-            encoding[(i / 2)] = (encoding[(i / 2)] << 4) ^ e;
-        }
-    }
-    std::cout << std::endl;
-
-    return encoding;
-};
 
 std::vector<int>* Board::getMoves(bool turn, int previousMove){
     int mask = 8;
