@@ -1,19 +1,21 @@
 #ifndef BOARD_H
 #define BOARD_H
-#include "pieces/Piece.h"
-#include "pieces/Pawn.h"
-#include "pieces/Knight.h"
-#include "pieces/Bishop.h"
-#include "pieces/Rook.h"
-#include "pieces/Queen.h"
-#include "pieces/King.h"
-#include  "moves/Moves.h"
+#include "../pieces/Piece.h"
+#include "../pieces/Pawn.h"
+#include "../pieces/Knight.h"
+#include "../pieces/Bishop.h"
+#include "../pieces/Rook.h"
+#include "../pieces/Queen.h"
+#include "../pieces/King.h"
+#include "../moves/Moves.h"
+#include "BoardHash.h"
 #include <stdio.h>
 #include <iostream>
 #include <array>
 #include <vector>
 #include <algorithm>
 #include <cstring>
+
 
 class Board{
 
@@ -34,6 +36,7 @@ class Board{
     static King* bkg;
 
     static Piece* plist[16];
+    static BoardHash* hash;
     std::array<std::array<Piece*, 8>, 8> chessBoard;
 
     bool bkgHasMoved;
@@ -71,7 +74,8 @@ class Board{
         );
 
         ~Board();
-        long getHash();
+        bool pieceTaken();
+        unsigned long getHash();
         std::string getString();
         std::array<long,4> encodeBoard();
         bool isValidPosforKing(int i_king, int j_king, bool turn);

@@ -6,7 +6,8 @@
 #include "../pieces/Queen.h"
 #include "../pieces/King.h"
 #include "../moves/Moves.h"
-#include "../Board.h"
+#include "../board/Board.h"
+#include "../board/BoardHash.h"
 #include <stdio.h>
 #include <iostream>
 #include <array>
@@ -351,15 +352,15 @@ void castle_black_not_valid_test1(std::string test, int mvs){
     assert (validMovesSize == mvs - 4);
 }
 
-std::unordered_set<long>* getMovesAtDepthN(Board* board, bool turn, int depth, int previousMove){
-    std::unordered_set<long>* results = new std::unordered_set<long>();
+std::unordered_set<unsigned long>* getMovesAtDepthN(Board* board, bool turn, int depth, int previousMove){
+    std::unordered_set<unsigned long>* results = new std::unordered_set<unsigned long>();
     if (depth == 0){
-        return new std::unordered_set<long>({board->getHash()});
+        return new std::unordered_set<unsigned long>({board->getHash()});
     } else {
         std::vector<int>* validMoves = board->getValidMoves(turn, previousMove);
         for (auto validMove : *validMoves){
             Board* b_temp = board->makeMove(turn, validMove);
-            std::unordered_set<long>* s = getMovesAtDepthN(b_temp, !turn, depth-1, validMove);
+            std::unordered_set<unsigned long>* s = getMovesAtDepthN(b_temp, !turn, depth-1, validMove);
             results->insert(s->begin(), s->end());
             delete s;
         }
@@ -381,8 +382,41 @@ void correct_number_of_starting_moves_at_depth_n_test(int n, int size){
         {wr , wkn, wb , wq, wkg , wb , wkn, wr }
     }};
     Board* b = new Board(chessBoard);
-    std::unordered_set<long>* noOfMoves = getMovesAtDepthN(b, 1, n, 0);
+    std::unordered_set<unsigned long>* noOfMoves = getMovesAtDepthN(b, 1, n, 0);
     int actualSize = noOfMoves->size();
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
+int getMovesAtDepth(Board* board, bool turn, int depth, int previousMove){
+    int results = 0;
+    if (depth == 0){
+        return 1;
+    } else {
+        std::vector<int>* validMoves = board->getValidMoves(turn, previousMove);
+        for (auto validMove : *validMoves){
+            Board* b_temp = board->makeMove(turn, validMove);
+            results += getMovesAtDepth(b_temp, !turn, depth-1, validMove);
+        }
+        delete validMoves;
+    }
+    return results;
+}
+
+void correct_number_of_starting_moves_at_depth_n_test_all(int n, int size){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
+        {bp , bp , bp , bp , bp , bp , bp , bp },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {wp , wp , wp , wp , wp , wp , wp , wp },
+        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    }};
+    Board* b = new Board(chessBoard);
+    int actualSize = getMovesAtDepth(b, 1, n, 0);
     std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
     assert (actualSize == size);
 }
@@ -404,7 +438,11 @@ int main(){
     king_moves_black_works_as_intended("black king", 12);
     castle_white_not_valid_test1("white king castling", 12);
     castle_black_not_valid_test1("black king castling", 12);
-    correct_number_of_starting_moves_at_depth_n_test(1, 20);
-    correct_number_of_starting_moves_at_depth_n_test(2, 400);
+    // correct_number_of_starting_moves_at_depth_n_test(1, 20);
+    // correct_number_of_starting_moves_at_depth_n_test(2, 400);
+    // correct_number_of_starting_moves_at_depth_n_test(3, 5362);
+    // correct_number_of_starting_moves_at_depth_n_test(4, 72159);
+    correct_number_of_starting_moves_at_depth_n_test_all(5, 4898786);
+    // correct_number_of_starting_moves_at_depth_n_test(6, 9132484);
     return 0;
 }

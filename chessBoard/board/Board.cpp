@@ -111,15 +111,20 @@ Board::~Board() {
     std::cout << "Deleted Board" << std::endl;
 }
 
-long Board::getHash(){
-    long hash = 0;
-    long p1 = 0b0110000100100110101100011011101011011100010011000110010011111110;
-    long p2 = 0b1011010111010011110001000001001000001011101101110111011001001011;
-    std::array<long,4> encoding = encodeBoard();
-    for (int i = 0; i < 4; i++){
-        hash = (hash + (p1 + encoding[i])) ^ p2;
+bool Board::pieceTaken(){
+    int counter = 0;
+    for (int i = 0; i < 8; i ++){
+        for (int j = 0; j < 8; j++){
+            if (chessBoard[i][j]->pieceEnum() != 0){
+                counter ++;
+            }
+        }
     }
-    return hash;
+    return counter < 16;
+}
+
+unsigned long Board::getHash(){
+    return hash->getHash(chessBoard);
 }
 
 std::string Board::getString(){
@@ -364,3 +369,5 @@ King* Board::bkg = new King(0);
 
 Piece* Board::plist[16] = {b, wp, wb, wkn, wr, wq, wkg, b, 
                            b, bp, bb, bkn, br, bq, bkg, b};
+
+BoardHash* Board::hash = new BoardHash();
