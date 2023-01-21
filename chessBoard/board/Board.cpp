@@ -158,6 +158,23 @@ std::array<long,4> Board::encodeBoard(){
     return encoding;
 };
 
+int Board::pieceEnumAtLocation(int i, int j){
+    return chessBoard[i][j]->pieceEnum();
+};
+
+int Board::getCastlingState(){
+    return (bkgHasMoved << 5) + (br1HasMoved << 4) + (br2HasMoved << 3) + (wkgHasMoved << 2) + (wr1HasMoved << 1) + wr2HasMoved;
+}
+
+void Board::setCastlingState(int castlingState){
+    bkgHasMoved = (castlingState >> 5) & 1;
+    br1HasMoved = (castlingState >> 4) & 1;
+    br2HasMoved = (castlingState >> 3) & 1;
+    wkgHasMoved = (castlingState >> 2) & 1;
+    wr1HasMoved = (castlingState >> 1) & 1;
+    wr2HasMoved = castlingState & 1;
+}
+
 bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
     if (i_king < 0 || i_king > 7 || j_king < 0 || j_king > 7){
         return false;
@@ -199,7 +216,7 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
         for (;0 <= xx && xx < 8 && 0 <= yy && yy < 8;){
             if ((chessBoard[xx][yy] -> pieceEnum()) == (turn ? 12 : 4) || (chessBoard[xx][yy] -> pieceEnum()) == (turn ? 13 : 5)){
                 return false;
-            } else if (chessBoard[i_king][j_king] -> pieceEnum() != 0){
+            } else if (chessBoard[xx][yy] -> pieceEnum() != 0){
                 break;
             }
             xx += direction[0];
@@ -214,7 +231,7 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
             while (0 <= xx && xx < 8 && 0 <= yy && yy < 8){
                 if ((chessBoard[xx][yy] -> pieceEnum()) == (turn ? 10 : 2) || (chessBoard[xx][yy] -> pieceEnum()) == (turn ? 13 : 5)){
                     return false;
-                } else if (chessBoard[i_king][j_king] -> pieceEnum() != 0) {
+                } else if (chessBoard[xx][yy] -> pieceEnum() != 0) {
                     break;
                 }
                 xx = x ? xx + 1 : xx - 1;
@@ -242,98 +259,69 @@ std::vector<int>* Board::getMoves(bool turn, int previousMove){
     return finalArray;
 };
 
-std::vector<int>* Board::getValidMoves(bool turn, int previousMove){
-    std::vector<int>*  moves = getMoves(turn, previousMove);
-    int i_king, j_king;
-    bool b = false;
-    for (i_king = 0 ; i_king < 8; i_king++) {
-        for (j_king = 0; j_king < 8; j_king++) {
-            if (chessBoard[i_king][j_king]->pieceEnum() == (turn ?  6 : 14)){
-                b = true;
-                break;
-            };
-        }
-        if (b){
-            break;
-        }
-    }
-    Move* moveDocoder = new Move();
-    moves->erase(std::remove_if(moves->begin(), moves->end(), [this, turn, moveDocoder, i_king, j_king](int mv) {
-        std::array<int, 4> move = moveDocoder->decodeMove(mv);
-        // std::cout << move[0] << " " << move[1] << " " << move[2] << " " << move[3] << std::endl;
-        bool del = false;
-        if ((1 << 28) & mv){
-            for (int col : {2, 3, 4}){
-                del |= !this->isValidPosforKing(turn ? 7 : 0, col, turn);
-                del |= !(turn ? this->wkgHasMoved : this->bkgHasMoved) && !(turn ? this->wr1HasMoved : this->br1HasMoved);
-            }
-        } else if ((1 << 29) & mv){
-            for (int col : {4, 5, 6}){
-                del |= !this->isValidPosforKing(turn ? 7 : 0, col, turn);
-                del |= !(turn ? this->wkgHasMoved : this->bkgHasMoved) && !(turn ? this->wr2HasMoved : this->br2HasMoved);
-            }
-        } else {
-            Board* b = makeMove(turn, mv);
-            if (chessBoard[i_king][j_king] -> pieceEnum() != b->chessBoard[i_king][j_king]->pieceEnum()){
-                int i_king1, j_king1;
-                bool done = false;
-                for (i_king1 = 0 ; i_king1 < 8; i_king1++) {
-                    for (j_king1 = 0; j_king1 < 8; j_king1++) {
-                        if (b->chessBoard[i_king1][j_king1]->pieceEnum() == (turn ?  6 : 14)){
-                            done = true;
-                            break;
-                        };
-                    }
-                    if (done){
-                        break;
-                    }
-                }
-                del |= !b->isValidPosforKing(i_king1, j_king1, turn);
-            } else {
-                del |= !b->isValidPosforKing(i_king, j_king, turn);
-            }
-        }
-        return del;
-    }), moves->end());
-    delete moveDocoder;
-    return moves;
-};
 
-Board* Board::makeMove(bool turn, int mv){
-    Board* b = new Board(chessBoard, bkgHasMoved, br1HasMoved, br2HasMoved, wkgHasMoved, wr1HasMoved, wr2HasMoved);
+void Board::makeMove(bool turn, int mv){
     Move* moveDocoder = new Move();
     std::array<int, 4> move = moveDocoder->decodeMove(mv);
     if ((1 << 28) & mv){
-        b->chessBoard[turn ? 7 : 0][2] = b->chessBoard[turn ? 7 : 0][4];
-        b->chessBoard[turn ? 7 : 0][3] = b->chessBoard[turn ? 7 : 0][0];
-        b->chessBoard[turn ? 7 : 0][4] = b->chessBoard[turn ? 7 : 0][0] = b->plist[0];
-        turn ? b->wkgHasMoved : b->bkgHasMoved = true;
-        turn ? b->wr1HasMoved : b->br1HasMoved = true;
+        chessBoard[turn ? 7 : 0][2] = chessBoard[turn ? 7 : 0][4];
+        chessBoard[turn ? 7 : 0][3] = chessBoard[turn ? 7 : 0][0];
+        chessBoard[turn ? 7 : 0][4] = chessBoard[turn ? 7 : 0][0] = plist[0];
+        turn ? wkgHasMoved : bkgHasMoved = true;
+        turn ? wr1HasMoved : br1HasMoved = true;
     } else if ((1 << 29) & mv){
-        b->chessBoard[turn ? 7 : 0][6] = b->chessBoard[turn ? 7 : 0][4];
-        b->chessBoard[turn ? 7 : 0][5] = b->chessBoard[turn ? 7 : 0][0];
-        b->chessBoard[turn ? 7 : 0][6] = b->chessBoard[turn ? 7 : 0][5] = b->plist[0];
-        turn ? b->wkgHasMoved : b->bkgHasMoved = true;
-        turn ? b->wr2HasMoved : b->br2HasMoved = true;
+        chessBoard[turn ? 7 : 0][6] = chessBoard[turn ? 7 : 0][4];
+        chessBoard[turn ? 7 : 0][5] = chessBoard[turn ? 7 : 0][7];
+        chessBoard[turn ? 7 : 0][4] = chessBoard[turn ? 7 : 0][7] = plist[0];
+        turn ? wkgHasMoved : bkgHasMoved = true;
+        turn ? wr2HasMoved : br2HasMoved = true;
     } else if ((1 << 30) & mv){
-        b->chessBoard[move[2]][move[3]] = b->chessBoard[move[0]][move[1]];
-        b->chessBoard[move[2] + turn ? 1 : -1][move[3]] = b->plist[0];
-        b->chessBoard[move[0]][move[1]] = b->plist[0];
+        chessBoard[move[2]][move[3]] = chessBoard[move[0]][move[1]];
+        chessBoard[move[2] + turn ? 1 : -1][move[3]] = plist[0];
+        chessBoard[move[0]][move[1]] = plist[0];
     } else if ((1 << 31) & mv){
         int piece = moveDocoder->decodePromotion(mv);
-        b->chessBoard[move[2]][move[3]] = b->plist[piece];
-        b->chessBoard[move[0]][move[1]] = b->plist[0];
+        chessBoard[move[2]][move[3]] = plist[piece];
+        chessBoard[move[0]][move[1]] = plist[0];
     } else {
-        b->chessBoard[move[2]][move[3]] = b->chessBoard[move[0]][move[1]];
-        b->chessBoard[move[0]][move[1]] = b->plist[0];
+        chessBoard[move[2]][move[3]] = chessBoard[move[0]][move[1]];
+        chessBoard[move[0]][move[1]] = plist[0];
     }
     if ((move[0] == (turn ? 7 : 0)  && move[1] == 0) || (move[2] == (turn ? 7 : 0) && move[3] == 0)){
-        turn ? b->wr1HasMoved : b->br1HasMoved = true;
+        turn ? wr1HasMoved : br1HasMoved = true;
     }
-        if ((move[0] == (turn ? 7 : 0)  && move[1] == 7) || (move[2] == (turn ? 7 : 0) && move[3] == 7)){
-        turn ? b->wr2HasMoved : b->br2HasMoved = true;
+    if ((move[0] == (turn ? 7 : 0)  && move[1] == 7) || (move[2] == (turn ? 7 : 0) && move[3] == 7)){
+        turn ? wr2HasMoved : br2HasMoved = true;
     }
-    return b;
+    if ((move[0] == (turn ? 7 : 0)  && move[1] == 4) || (move[2] == (turn ? 7 : 0) && move[3] == 4)){
+        turn ? wkgHasMoved : bkgHasMoved = true;
+    }
+}
+
+void Board::undoMove(bool turn, int undoMove, int castlingState){
+    this->setCastlingState(castlingState);
+    Move* moveDocoder = new Move();
+    std::array<int, 4> move = moveDocoder->decodeMove(undoMove);
+    if ((1 << 28) & undoMove){
+        chessBoard[turn ? 7 : 0][4] = chessBoard[turn ? 7 : 0][2];
+        chessBoard[turn ? 7 : 0][0] = chessBoard[turn ? 7 : 0][3];
+        chessBoard[turn ? 7 : 0][2] = chessBoard[turn ? 7 : 0][3] = plist[0];
+    } else if ((1 << 29) & undoMove){
+        chessBoard[turn ? 7 : 0][4] = chessBoard[turn ? 7 : 0][6];
+        chessBoard[turn ? 7 : 0][7] = chessBoard[turn ? 7 : 0][5];
+        chessBoard[turn ? 7 : 0][6] = chessBoard[turn ? 7 : 0][5] = plist[0];
+    } else if ((1 << 30) & undoMove){
+        chessBoard[move[0]][move[1]] = chessBoard[move[2]][move[3]];
+        chessBoard[move[2] + turn ? 1 : -1][move[3]] = plist[turn ? 1 : 9];
+        chessBoard[move[2]][move[3]] = plist[0];
+    } else if ((1 << 31) & undoMove){
+        chessBoard[move[2]][move[3]] = plist[0];
+        chessBoard[move[0]][move[1]] = plist[turn ? 1 : 9];
+    } else {
+        int capturedPiece = (undoMove >> 16) & 0b1111;
+        chessBoard[move[0]][move[1]] = chessBoard[move[2]][move[3]];
+        chessBoard[move[2]][move[3]] = plist[capturedPiece];
+    }
 }
 
 void Board::printBoard(){

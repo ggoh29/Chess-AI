@@ -78,10 +78,13 @@ class Board{
         unsigned long getHash();
         std::string getString();
         std::array<long,4> encodeBoard();
+        int pieceEnumAtLocation(int i, int j);
+        int getCastlingState();
+        void setCastlingState(int castlingState);
         bool isValidPosforKing(int i_king, int j_king, bool turn);
         std::vector<int>* getMoves(bool turn, int previousMove);
-        std::vector<int>* getValidMoves(bool turn, int previousMove);
-        Board* makeMove(bool turn, int move);
+        void makeMove(bool turn, int move);
+        void undoMove(bool turn, int undoMove, int castlingState);
         void printBoard();
 };
 #endif

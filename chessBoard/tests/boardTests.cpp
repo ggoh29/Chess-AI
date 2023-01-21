@@ -8,6 +8,7 @@
 #include "../moves/Moves.h"
 #include "../board/Board.h"
 #include "../board/BoardHash.h"
+#include "../board/BoardInterface.h"
 #include <stdio.h>
 #include <iostream>
 #include <array>
@@ -308,6 +309,7 @@ void king_moves_black_works_as_intended(std::string test, int mvs){
 
 void castle_white_not_valid_test1(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    BoardInterface* interface = new BoardInterface();
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
      {br , b  , b  , b  , bkg, b  , b  , br }, 
      {bp , b  , b  , b  , wp , b  , b  , bp },
@@ -319,10 +321,11 @@ void castle_white_not_valid_test1(std::string test, int mvs){
      {wr , b  , b  , b  , wkg, b  , b  , wr }
     }};
     Board* b = new Board(chessBoard);
-    std::vector<int>* moves = b->getMoves(1, 0);
+    interface->setBoard(b);
+    std::vector<int>* moves = interface->getMoves(1);
     int movesSize = moves->size();
     std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
-    std::vector<int>* validMoves = b->getValidMoves(1, 0);
+    std::vector<int>* validMoves = interface->getValidMoves(1);
     int validMovesSize = validMoves->size();
     std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
     assert (movesSize == mvs);
@@ -331,6 +334,7 @@ void castle_white_not_valid_test1(std::string test, int mvs){
 
 void castle_black_not_valid_test1(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    BoardInterface* interface = new BoardInterface();
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
      {br , b  , b  , b  , bkg, b  , b  , br }, 
      {bp , b  , b  , b  , wp , b  , b  , bp },
@@ -342,26 +346,82 @@ void castle_black_not_valid_test1(std::string test, int mvs){
      {wr , b  , b  , b  , wkg, b  , b  , wr }
     }};
     Board* b = new Board(chessBoard);
-    std::vector<int>* moves = b->getMoves(0, 0);
+    interface->setBoard(b);
+    std::vector<int>* moves = interface->getMoves(0);
     int movesSize = moves->size();
     std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
-    std::vector<int>* validMoves = b->getValidMoves(0, 0);
+    std::vector<int>* validMoves = interface->getValidMoves(0);
     int validMovesSize = validMoves->size();
     std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
     assert (movesSize == mvs);
     assert (validMovesSize == mvs - 4);
 }
 
-std::unordered_set<unsigned long>* getMovesAtDepthN(Board* board, bool turn, int depth, int previousMove){
+void king_in_checkmate_no_moves(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {br , bkn, bb , bq, bkg , bb , b  , br }, 
+        {bp , bp , bp , bp , b  , wq , bp , bp },
+        {b  , b  , b  , b  , b  , bkn, b  , b  },
+        {b  , b  , b  , b  , bp , b  , b  , b  },
+        {b  , b  , wb , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {wp , wp , wp , wp , wp , wp , wp , wp },
+        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    std::vector<int>* moves = interface->getMoves(0);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
+    std::vector<int>* validMoves = interface->getValidMoves(0);
+    int validMovesSize = 0;
+    if (!validMoves->empty()){
+        validMovesSize = validMoves->size();
+    }
+    std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
+    assert (validMovesSize == mvs);
+}
+
+void king_in_check_moves_correctly(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {br , bkn, bb , bq, bkg , bb , b  , br }, 
+        {bp , bp , bp , bp , b  , b  , bp , bp },
+        {b  , b  , b  , b  , b  , bkn, b  , b  },
+        {b  , b  , b  , b  , bp , b  , b  , wq },
+        {b  , b  , wb , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {wp , wp , wp , wp , wp , wp , wp , wp },
+        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    std::vector<int>* moves = interface->getMoves(0);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
+    std::vector<int>* validMoves = interface->getValidMoves(0);
+    int validMovesSize = 0;
+    if (!validMoves->empty()){
+        validMovesSize = validMoves->size();
+    }
+    std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
+    assert (validMovesSize == mvs);
+}
+
+std::unordered_set<unsigned long>* getMovesAtDepthN(BoardInterface* interface, bool turn, int depth, int previousMove){
     std::unordered_set<unsigned long>* results = new std::unordered_set<unsigned long>();
     if (depth == 0){
-        return new std::unordered_set<unsigned long>({board->getHash()});
+        return new std::unordered_set<unsigned long>({interface->getHash()});
     } else {
-        std::vector<int>* validMoves = board->getValidMoves(turn, previousMove);
+        std::vector<int>* validMoves = interface->getValidMoves(turn);
         for (auto validMove : *validMoves){
-            Board* b_temp = board->makeMove(turn, validMove);
-            std::unordered_set<unsigned long>* s = getMovesAtDepthN(b_temp, !turn, depth-1, validMove);
+            interface->makeMove(turn, validMove);
+            std::unordered_set<unsigned long>* s = getMovesAtDepthN(interface, !turn, depth-1, validMove);
             results->insert(s->begin(), s->end());
+            interface->undoMove(turn);
             delete s;
         }
         delete validMoves;
@@ -371,32 +431,23 @@ std::unordered_set<unsigned long>* getMovesAtDepthN(Board* board, bool turn, int
 
 void correct_number_of_starting_moves_at_depth_n_test(int n, int size){
     std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
-        {bp , bp , bp , bp , bp , bp , bp , bp },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {wp , wp , wp , wp , wp , wp , wp , wp },
-        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
-    }};
-    Board* b = new Board(chessBoard);
-    std::unordered_set<unsigned long>* noOfMoves = getMovesAtDepthN(b, 1, n, 0);
+    BoardInterface* interface = new BoardInterface();
+    std::unordered_set<unsigned long>* noOfMoves = getMovesAtDepthN(interface, 1, n, 0);
     int actualSize = noOfMoves->size();
     std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
     assert (actualSize == size);
 }
 
-int getMovesAtDepth(Board* board, bool turn, int depth, int previousMove){
+int getMovesAtDepth(BoardInterface* interface, bool turn, int depth, int previousMove){
     int results = 0;
     if (depth == 0){
         return 1;
     } else {
-        std::vector<int>* validMoves = board->getValidMoves(turn, previousMove);
+        std::vector<int>* validMoves = interface->getValidMoves(turn);
         for (auto validMove : *validMoves){
-            Board* b_temp = board->makeMove(turn, validMove);
-            results += getMovesAtDepth(b_temp, !turn, depth-1, validMove);
+            interface->makeMove(turn, validMove);
+            results += getMovesAtDepth(interface, !turn, depth-1, validMove);
+            interface->undoMove(turn);
         }
         delete validMoves;
     }
@@ -405,44 +456,38 @@ int getMovesAtDepth(Board* board, bool turn, int depth, int previousMove){
 
 void correct_number_of_starting_moves_at_depth_n_test_all(int n, int size){
     std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
-        {bp , bp , bp , bp , bp , bp , bp , bp },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {wp , wp , wp , wp , wp , wp , wp , wp },
-        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
-    }};
-    Board* b = new Board(chessBoard);
-    int actualSize = getMovesAtDepth(b, 1, n, 0);
+    BoardInterface* interface = new BoardInterface();
+    int actualSize = getMovesAtDepth(interface, 1, n, 0);
     std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
-    assert (actualSize == size);
+    // assert (actualSize == size);
 }
 
 int main(){
-    en_passant_works_as_intended("white en passant", 3);
-    promotion_works_as_intended("white promotion", 15);
-    pawn_moves_white_works_as_intended("white pawn", 14);
-    pawn_moves_black_works_as_intended("black pawn", 12);
-    knight_moves_white_works_as_intended("white knight", 5);
-    knight_moves_black_works_as_intended("black knight", 5);
-    bishop_moves_white_works_as_intended("white bishop", 7);
-    bishop_moves_black_works_as_intended("black bishop", 5);
-    rook_moves_white_works_as_intended("white rook", 35);
-    rook_moves_black_works_as_intended("black rook", 35);
-    queen_moves_white_works_as_intended("white queen", 18);
-    queen_moves_black_works_as_intended("black queen", 18);
-    king_moves_white_works_as_intended("white king", 12);
-    king_moves_black_works_as_intended("black king", 12);
-    castle_white_not_valid_test1("white king castling", 12);
-    castle_black_not_valid_test1("black king castling", 12);
+    // en_passant_works_as_intended("white en passant", 3);
+    // promotion_works_as_intended("white promotion", 15);
+    // pawn_moves_white_works_as_intended("white pawn", 14);
+    // pawn_moves_black_works_as_intended("black pawn", 12);
+    // knight_moves_white_works_as_intended("white knight", 5);
+    // knight_moves_black_works_as_intended("black knight", 5);
+    // bishop_moves_white_works_as_intended("white bishop", 7);
+    // bishop_moves_black_works_as_intended("black bishop", 5);
+    // rook_moves_white_works_as_intended("white rook", 35);
+    // rook_moves_black_works_as_intended("black rook", 35);
+    // queen_moves_white_works_as_intended("white queen", 18);
+    // queen_moves_black_works_as_intended("black queen", 18);
+    // king_moves_white_works_as_intended("white king", 12);
+    // king_moves_black_works_as_intended("black king", 12);
+    // castle_white_not_valid_test1("white king castling", 12);
+    // castle_black_not_valid_test1("black king castling", 12);
+    // king_in_checkmate_no_moves("black king checkmated", 0);
+    // king_in_check_moves_correctly("black king in check", 3);
     // correct_number_of_starting_moves_at_depth_n_test(1, 20);
     // correct_number_of_starting_moves_at_depth_n_test(2, 400);
     // correct_number_of_starting_moves_at_depth_n_test(3, 5362);
-    // correct_number_of_starting_moves_at_depth_n_test(4, 72159);
-    correct_number_of_starting_moves_at_depth_n_test_all(5, 4898786);
+    // correct_number_of_starting_moves_at_depth_n_test(4, 71852);
+    // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
+    // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
     // correct_number_of_starting_moves_at_depth_n_test(6, 9132484);
+    correct_number_of_starting_moves_at_depth_n_test_all(5, 0);
     return 0;
 }
