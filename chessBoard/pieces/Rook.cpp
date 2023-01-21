@@ -26,10 +26,14 @@ std::vector<int>* Rook::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
         int xx = i + direction[0];
         int yy = j + direction[1];
         for (;0 <= xx && xx < 8 && 0 <= yy && yy < 8;){
-            if ((chessBoard[xx][yy] -> pieceEnum()) == 0 | !isSameTeam(colour, chessBoard[xx][yy])){
+            bool cond = !isSameTeam(colour, chessBoard[xx][yy]);
+            if ((chessBoard[xx][yy] -> pieceEnum()) == 0 | cond){
                 std::array<int, 4> move = {i, j, xx, yy};
                 int moveEncoded = mv->encodeMove(move);
                 moves->push_back(moveEncoded);
+                if (cond){
+                    break;
+                }
                 xx += direction[0];
                 yy += direction[1];
             } else {

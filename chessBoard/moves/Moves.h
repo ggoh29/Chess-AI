@@ -5,7 +5,7 @@
 class Move{
   bool colour;
   public:
-    Move(); 
+    Move();
     int encodeMove(std::array<int, 4> move);
     int encodeEnPassant(std::array<int, 4> move);
     int encodePromotion(std::array<int, 4> move, int promotedPiece);

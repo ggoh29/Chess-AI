@@ -441,7 +441,6 @@ void king_in_pin_moves_correctly(std::string test, int mvs){
 std::unordered_set<unsigned long>* getMovesAtDepthN(BoardInterface* interface, bool turn, int depth, int previousMove){
     std::unordered_set<unsigned long>* results = new std::unordered_set<unsigned long>();
     if (depth == 0){
-        interface->printBoard();
         return new std::unordered_set<unsigned long>({interface->getHash()});
     } else {
         std::vector<int>* validMoves = interface->getValidMoves(turn);
@@ -494,7 +493,7 @@ void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(int n, int
     std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
     BoardInterface* interface = new BoardInterface();
     std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq,  b  , bkn, b  , br }, 
+        {br , bkn, bb , bq,  b  , bkg, b  , br }, 
         {bp , bp , b  , wp , bb , bp , bp , bp },
         {b  , b  , bp , b  , b  , b  , b  , b  },
         {b  , b  , b  , b  , b  , b  , b  , b  },
@@ -510,36 +509,85 @@ void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(int n, int
     assert (actualSize == size);
 }
 
+void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(int n, int size, bool turn){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {b  , b  , b  , b  , b  , b  , b  , bkg}, 
+        {b  , b  , bp , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , bp },
+        {wkg, wp , b  , b  , b  , b  , b  , br },
+        {b  , b  , b  , b  , b  , b  , b  , bp },
+        {b  , b  , b  , b  , b  , b  , b  , wp },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  }
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    int actualSize = getMovesAtDepth(interface, turn, n, 0);
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
+void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(int n, int size, bool turn){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {b  , b  , b  , b  , b  , b  , b  , bkg}, 
+        {b  , b  , bp , b  , b  , b  , b  , b  },
+        {wkg, b  , b  , b  , b  , b  , b  , bp },
+        {b  , wp , b  , b  , b  , b  , b  , br },
+        {b  , b  , b  , b  , b  , b  , b  , bp },
+        {b  , b  , b  , b  , b  , b  , b  , wp },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  }
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    int actualSize = getMovesAtDepth(interface, turn, n, 0);
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
 int main(){
-    // en_passant_works_as_intended("white en passant", 3);
-    // promotion_works_as_intended("white promotion", 12);
-    // pawn_moves_white_works_as_intended("white pawn", 12);
-    // pawn_moves_black_works_as_intended("black pawn", 11);
-    // knight_moves_white_works_as_intended("white knight", 5);
-    // knight_moves_black_works_as_intended("black knight", 5);
-    // bishop_moves_white_works_as_intended("white bishop", 7);
-    // bishop_moves_black_works_as_intended("black bishop", 5);
-    // rook_moves_white_works_as_intended("white rook", 35);
-    // rook_moves_black_works_as_intended("black rook", 35);
-    // queen_moves_white_works_as_intended("white queen", 18);
-    // queen_moves_black_works_as_intended("black queen", 18);
-    // king_moves_white_works_as_intended("white king", 12);
-    // king_moves_black_works_as_intended("black king", 12);
-    // castle_white_not_valid_test1("white king castling", 12);
-    // castle_black_not_valid_test1("black king castling", 12);
-    // king_in_checkmate_no_moves("black king checkmated", 0);
-    // king_in_check_moves_correctly("black king in check", 3);
-    // king_in_pin_moves_correctly("black king in pin", 27);
+    en_passant_works_as_intended("white en passant", 3);
+    promotion_works_as_intended("white promotion", 12);
+    pawn_moves_white_works_as_intended("white pawn", 12);
+    pawn_moves_black_works_as_intended("black pawn", 11);
+    knight_moves_white_works_as_intended("white knight", 5);
+    knight_moves_black_works_as_intended("black knight", 5);
+    bishop_moves_white_works_as_intended("white bishop", 7);
+    bishop_moves_black_works_as_intended("black bishop", 5);
+    rook_moves_white_works_as_intended("white rook", 35);
+    rook_moves_black_works_as_intended("black rook", 35);
+    queen_moves_white_works_as_intended("white queen", 18);
+    queen_moves_black_works_as_intended("black queen", 18);
+    king_moves_white_works_as_intended("white king", 12);
+    king_moves_black_works_as_intended("black king", 12);
+    castle_white_not_valid_test1("white king castling", 12);
+    castle_black_not_valid_test1("black king castling", 12);
+    king_in_checkmate_no_moves("black king checkmated", 0);
+    king_in_check_moves_correctly("black king in check", 3);
+    king_in_pin_moves_correctly("black king in pin", 27);
     // correct_number_of_starting_moves_at_depth_n_test(1, 20);
     // correct_number_of_starting_moves_at_depth_n_test(2, 400);
-    correct_number_of_starting_moves_at_depth_n_test(3, 5362);
-    // correct_number_of_starting_moves_at_depth_n_test(4, 71852);
-    // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
-    // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
+    // correct_number_of_starting_moves_at_depth_n_test(3, 5362);
+    correct_number_of_starting_moves_at_depth_n_test(4, 71852);
     // correct_number_of_starting_moves_at_depth_n_test(6, 9132484);
-    // correct_number_of_starting_moves_at_depth_n_test_all(4, 0);
-    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, 1);
-    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, 0);
-    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, 1);
+    // correct_number_of_starting_moves_at_depth_n_test_all(1, 20);
+    // correct_number_of_starting_moves_at_depth_n_test_all(2, 400);
+    // correct_number_of_starting_moves_at_depth_n_test_all(3, 8902);
+    // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
+    correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
+    // correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(4, 2103487, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(5, 89941194, true);
+    //correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(1, 11, false);
+    //correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(2, 35, false);
+    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(1, 11, false);
+    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(2, 45, false);
     return 0;
 }

@@ -33,33 +33,33 @@ std::vector<int>* King::getMoves(int i, int j, std::array<std::array<Piece*, 8>,
     }
 
     bool inCastlingSpot = false;
-    int castlingRow = colour ? 7 : 0;
+    int castlingRow = (colour ? 7 : 0);
     if ((i == castlingRow) && (j == 4)){
         inCastlingSpot = true;
     }
 
     bool canLongCastle = inCastlingSpot;
-    if (canLongCastle && chessBoard[castlingRow][0]->pieceEnum() == colour ? 4 : 12){
+    if (canLongCastle && (chessBoard[castlingRow][0]->pieceEnum() == (colour ? 4 : 12))){
         for (int x : {1, 2, 3}){
-            canLongCastle &= chessBoard[i][x]->pieceEnum() == 0;
+            canLongCastle &= (chessBoard[i][x]->pieceEnum() == 0);
+        }
+        if (canLongCastle){
+            std::array<int, 4> move = {i, j, i, 2};
+            int moveEncoded = mv->encodeLongCastle(move);
+            moves->push_back(moveEncoded);
         }
     }
-    if (canLongCastle){
-        std::array<int, 4> move = {i, j, i, 2};
-        int moveEncoded = mv->encodeLongCastle(move);
-        moves->push_back(moveEncoded);
-    }
-
+    
     bool canShortCastle = inCastlingSpot;
-    if (canShortCastle && chessBoard[castlingRow][7]->pieceEnum() == colour ? 4 : 12){
+    if (canShortCastle && (chessBoard[castlingRow][7]->pieceEnum() == (colour ? 4 : 12))){
         for (int x : {5, 6}){
-            canShortCastle &= chessBoard[i][x]->pieceEnum() == 0;
+            canShortCastle &= (chessBoard[i][x]->pieceEnum() == 0);
         }
-    }
-    if (canShortCastle){
-        std::array<int, 4> move = {i, j, i, 6};
-        int moveEncoded = mv->encodeShortCastle(move);
-        moves->push_back(moveEncoded);
+        if (canShortCastle){
+            std::array<int, 4> move = {i, j, i, 6};
+            int moveEncoded = mv->encodeShortCastle(move);
+            moves->push_back(moveEncoded);
+        }
     }
 
     return moves;

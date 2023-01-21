@@ -35,6 +35,8 @@ class Board{
     static Queen* bq;
     static King* bkg;
 
+    static char piecelist[16];
+    static char charlist[8];
     static Piece* plist[16];
     static BoardHash* hash;
     std::array<std::array<Piece*, 8>, 8> chessBoard;
@@ -85,6 +87,7 @@ class Board{
         std::vector<int>* getMoves(bool turn, int previousMove);
         void makeMove(bool turn, int move);
         void undoMove(bool turn, int undoMove, int castlingState);
+        void printMove(int move);
         void printBoard();
 };
 #endif

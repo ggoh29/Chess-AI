@@ -301,6 +301,7 @@ void Board::makeMove(bool turn, int mv){
 void Board::undoMove(bool turn, int undoMove, int castlingState){
     this->setCastlingState(castlingState);
     Move* moveDocoder = new Move();
+    int capturedPiece = (undoMove >> 16) & 0b1111;
     std::array<int, 4> move = moveDocoder->decodeMove(undoMove);
     if ((1 << 28) & undoMove){
         chessBoard[turn ? 7 : 0][4] = chessBoard[turn ? 7 : 0][2];
@@ -315,13 +316,26 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
         chessBoard[move[2] + turn ? 1 : -1][move[3]] = plist[turn ? 9 : 1];
         chessBoard[move[2]][move[3]] = plist[0];
     } else if ((1 << 30) & undoMove){
-        int capturedPiece = (undoMove >> 16) & 0b1111;
         chessBoard[move[2]][move[3]] = plist[capturedPiece];
         chessBoard[move[0]][move[1]] = plist[turn ? 1 : 9];
     } else {
-        int capturedPiece = (undoMove >> 16) & 0b1111;
         chessBoard[move[0]][move[1]] = chessBoard[move[2]][move[3]];
         chessBoard[move[2]][move[3]] = plist[capturedPiece];
+    }
+}
+
+void Board::printMove(int move){
+    Move mvDecoder = Move();
+    std::array<int, 4> mv = mvDecoder.decodeMove(move);
+    if ((1 << 28) & move){
+        std::cout << "O-O-O";
+    } else if ((1 << 29) & move){
+        std::cout << "O-O";
+    } else if ((1 << 30) & move){
+        int piece = mvDecoder.decodePromotion(move);
+        std::cout << charlist[mv[0]] << mv[1] << "-" << charlist[mv[2]] << mv[3] << " " << piecelist[piece];
+    } else {
+        std::cout << charlist[mv[0]] << mv[1] << "-" << charlist[mv[2]] << mv[3];
     }
 }
 
@@ -358,5 +372,9 @@ King* Board::bkg = new King(0);
 
 Piece* Board::plist[16] = {b, wp, wb, wkn, wr, wq, wkg, b, 
                            b, bp, bb, bkn, br, bq, bkg, b};
+
+char Board::charlist[8] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h'};
+char Board::piecelist[16] = {' ', ' ', 'B', 'N', 'R', 'Q', 'K', ' ',
+                             ' ', ' ', 'B', 'N', 'R', 'Q', 'K', ' '};
 
 BoardHash* Board::hash = new BoardHash();
