@@ -22,7 +22,7 @@ int Move::encodeEnPassant(std::array<int, 4> move){
 int Move::encodePromotion(std::array<int, 4> move, int promotedPiece){
     int encodedMove = 0;
     for (int i = 0; i < 4; i++){
-        encodedMove = (encodedMove << 4) ^ move[i];
+        encodedMove = (encodedMove << 4) ^ (0b1111 & move[i]);
     }
     encodedMove = encodedMove ^ (1 << 30);
     encodedMove = encodedMove ^ ((0b1111 & promotedPiece) << 16);
@@ -48,7 +48,7 @@ int Move::encodeLongCastle(std::array<int, 4> move){
 };
 
 int Move::encodeUndoMove(int encodedMove, int capturedPieceEnum){
-    encodedMove = encodedMove ^ ((0b1111 & capturedPieceEnum) << 16);
+    encodedMove = (encodedMove & (0b11111111111100001111111111111111)) ^ ((0b1111 & capturedPieceEnum) << 16);
     return encodedMove;
 };
 
@@ -63,7 +63,7 @@ int Move::decodeCastlingState(int encodedMove){
 }
 
 int Move::decodePromotion(int encodedMove){
-    return encodedMove & (15 << 16);
+    return (encodedMove >> 16) &  0b1111;
 };
 
 std::array<int, 4> Move::decodeMove(int encodedMove){

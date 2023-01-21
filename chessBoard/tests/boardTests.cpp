@@ -411,9 +411,37 @@ void king_in_check_moves_correctly(std::string test, int mvs){
     assert (validMovesSize == mvs);
 }
 
+void king_in_pin_moves_correctly(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
+        {bp , bp , bp , bp , b  , bp , bp , bp },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , bp , b  , b  , wq },
+        {b  , b  , wb , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {wp , wp , wp , wp , wp , wp , wp , wp },
+        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    std::vector<int>* moves = interface->getMoves(0);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
+    std::vector<int>* validMoves = interface->getValidMoves(0);
+    int validMovesSize = 0;
+    if (!validMoves->empty()){
+        validMovesSize = validMoves->size();
+    }
+    std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
+    assert (validMovesSize == mvs);
+}
+
 std::unordered_set<unsigned long>* getMovesAtDepthN(BoardInterface* interface, bool turn, int depth, int previousMove){
     std::unordered_set<unsigned long>* results = new std::unordered_set<unsigned long>();
     if (depth == 0){
+        interface->printBoard();
         return new std::unordered_set<unsigned long>({interface->getHash()});
     } else {
         std::vector<int>* validMoves = interface->getValidMoves(turn);
@@ -462,11 +490,31 @@ void correct_number_of_starting_moves_at_depth_n_test_all(int n, int size){
     // assert (actualSize == size);
 }
 
+void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(int n, int size, bool turn){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
+        {br , bkn, bb , bq,  b  , bkn, b  , br }, 
+        {bp , bp , b  , wp , bb , bp , bp , bp },
+        {b  , b  , bp , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {b  , b  , wb , b  , b  , b  , b  , b  },
+        {b  , b  , b  , b  , b  , b  , b  , b  },
+        {wp , wp , wp , b  , wkn, bkn, wp , wp },
+        {wr , wkn, wb , wq, wkg , b  , b  , wr }
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    int actualSize = getMovesAtDepth(interface, turn, n, 0);
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
 int main(){
     // en_passant_works_as_intended("white en passant", 3);
-    // promotion_works_as_intended("white promotion", 15);
-    // pawn_moves_white_works_as_intended("white pawn", 14);
-    // pawn_moves_black_works_as_intended("black pawn", 12);
+    // promotion_works_as_intended("white promotion", 12);
+    // pawn_moves_white_works_as_intended("white pawn", 12);
+    // pawn_moves_black_works_as_intended("black pawn", 11);
     // knight_moves_white_works_as_intended("white knight", 5);
     // knight_moves_black_works_as_intended("black knight", 5);
     // bishop_moves_white_works_as_intended("white bishop", 7);
@@ -481,13 +529,17 @@ int main(){
     // castle_black_not_valid_test1("black king castling", 12);
     // king_in_checkmate_no_moves("black king checkmated", 0);
     // king_in_check_moves_correctly("black king in check", 3);
+    // king_in_pin_moves_correctly("black king in pin", 27);
     // correct_number_of_starting_moves_at_depth_n_test(1, 20);
     // correct_number_of_starting_moves_at_depth_n_test(2, 400);
-    // correct_number_of_starting_moves_at_depth_n_test(3, 5362);
+    correct_number_of_starting_moves_at_depth_n_test(3, 5362);
     // correct_number_of_starting_moves_at_depth_n_test(4, 71852);
     // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
     // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
     // correct_number_of_starting_moves_at_depth_n_test(6, 9132484);
-    correct_number_of_starting_moves_at_depth_n_test_all(5, 0);
+    // correct_number_of_starting_moves_at_depth_n_test_all(4, 0);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, 1);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, 0);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, 1);
     return 0;
 }

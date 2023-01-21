@@ -275,11 +275,11 @@ void Board::makeMove(bool turn, int mv){
         chessBoard[turn ? 7 : 0][4] = chessBoard[turn ? 7 : 0][7] = plist[0];
         turn ? wkgHasMoved : bkgHasMoved = true;
         turn ? wr2HasMoved : br2HasMoved = true;
-    } else if ((1 << 30) & mv){
+    } else if ((1 << 31) & mv){
         chessBoard[move[2]][move[3]] = chessBoard[move[0]][move[1]];
         chessBoard[move[2] + turn ? 1 : -1][move[3]] = plist[0];
         chessBoard[move[0]][move[1]] = plist[0];
-    } else if ((1 << 31) & mv){
+    } else if ((1 << 30) & mv){
         int piece = moveDocoder->decodePromotion(mv);
         chessBoard[move[2]][move[3]] = plist[piece];
         chessBoard[move[0]][move[1]] = plist[0];
@@ -310,12 +310,13 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
         chessBoard[turn ? 7 : 0][4] = chessBoard[turn ? 7 : 0][6];
         chessBoard[turn ? 7 : 0][7] = chessBoard[turn ? 7 : 0][5];
         chessBoard[turn ? 7 : 0][6] = chessBoard[turn ? 7 : 0][5] = plist[0];
-    } else if ((1 << 30) & undoMove){
-        chessBoard[move[0]][move[1]] = chessBoard[move[2]][move[3]];
-        chessBoard[move[2] + turn ? 1 : -1][move[3]] = plist[turn ? 1 : 9];
-        chessBoard[move[2]][move[3]] = plist[0];
     } else if ((1 << 31) & undoMove){
+        chessBoard[move[0]][move[1]] = chessBoard[move[2]][move[3]];
+        chessBoard[move[2] + turn ? 1 : -1][move[3]] = plist[turn ? 9 : 1];
         chessBoard[move[2]][move[3]] = plist[0];
+    } else if ((1 << 30) & undoMove){
+        int capturedPiece = (undoMove >> 16) & 0b1111;
+        chessBoard[move[2]][move[3]] = plist[capturedPiece];
         chessBoard[move[0]][move[1]] = plist[turn ? 1 : 9];
     } else {
         int capturedPiece = (undoMove >> 16) & 0b1111;

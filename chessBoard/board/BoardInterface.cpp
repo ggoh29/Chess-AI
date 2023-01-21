@@ -38,7 +38,6 @@ void BoardInterface::undoMove(bool turn){
     if (!this->undoMoveslist->empty()){
         Move moveDocoder = Move();
         int undoMove = undoMoveslist->back();
-        std::array<int, 4> mv = moveDocoder.decodeMove(undoMove);
         int castlingState = moveDocoder.decodeCastlingState(undoMove);
         this->board->undoMove(turn, undoMove, castlingState);
         undoMoveslist->pop_back();
@@ -89,13 +88,13 @@ std::vector<int>* BoardInterface::getValidMoves(bool turn){
         if ((1 << 28) & mv){
             for (int col : {2, 3, 4}){
                 del |= !board->isValidPosforKing(turn ? 7 : 0, col, turn);
-                del |= !(castlingState & (turn ? 4 : 32)) && !(castlingState & (turn ? 2 : 16));
             }
+            del |= (castlingState & (turn ? 4 : 32)) || (castlingState & (turn ? 2 : 16));
         } else if ((1 << 29) & mv){
             for (int col : {4, 5, 6}){
                 del |= !board->isValidPosforKing(turn ? 7 : 0, col, turn);
-                del |= !(castlingState & (turn ? 4 : 32)) && !(castlingState & (turn ? 1 : 8));
             }
+            del |= (castlingState & (turn ? 4 : 32)) || (castlingState & (turn ? 1 : 8));
         } else {
             if (move[0] == i_king && move[1] == j_king){
                 del |= !board->isValidPosforKing(move[2], move[3], turn);
