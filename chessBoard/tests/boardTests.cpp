@@ -41,15 +41,15 @@ Piece* plist[16] = {b, wp, wb, wkn, wr, wq, wkg, b,
 void en_passant_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     Move* mover = new Move();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , bp , b  , b  , b  , b  , b },
-     {b  , b  , b  , wp , bp , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , bp , b  , b  , b  , b  , b  ,
+     b  , b  , b  , wp , bp , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::array<int, 4> move = {1, 4, 3, 4};
@@ -62,15 +62,15 @@ void en_passant_works_as_intended(std::string test, int mvs){
 
 void promotion_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , bp , b ,  bp , b  , b  }, 
-     {b  , b  , b  , b  , wp , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , bp , b ,  bp , b  , b  , 
+     b  , b  , b  , b  , wp , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
@@ -81,15 +81,15 @@ void promotion_works_as_intended(std::string test, int mvs){
 
 void pawn_moves_white_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , bp , b ,  b , b  , b  }, 
-     {b  , b  , b  , b  , wp , b  , b  , b  },
-     {b  , bp , bp , b  , b  , b  , b  , b  },
-     {b  , wp , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , bp , b  , b  , b  },
-     {b  , b  , b  , wp , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , bp , b ,  b  , b  , b  , 
+     b  , b  , b  , b  , wp , b  , b  , b  ,
+     b  , bp , bp , b  , b  , b  , b  , b  ,
+     b  , wp , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , bp , b  , b  , b  ,
+     b  , b  , b  , wp , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
@@ -100,15 +100,15 @@ void pawn_moves_white_works_as_intended(std::string test, int mvs){
 
 void pawn_moves_black_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , bp , b  , b  , b  , b  },
-     {b  , bp , bp , b  , wp , b  , b  , b  },
-     {b  , wp , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , bp , b  , b  , b  },
-     {b  , b  , bp , wp , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , bp , b  , b  , b  , b  ,
+     b  , bp , bp , b  , wp , b  , b  , b  ,
+     b  , wp , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , bp , b  , b  , b  ,
+     b  , b  , bp , wp , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(0, 0);
@@ -119,15 +119,15 @@ void pawn_moves_black_works_as_intended(std::string test, int mvs){
 
 void knight_moves_white_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , wkn, b  , bp , b  , b  },
-     {b  , bp , b  , b  , b  , wp , b  , b  },
-     {b  , wp , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , wkn, b  , bp , b  , b  ,
+     b  , bp , b  , b  , b  , wp , b  , b  ,
+     b  , wp , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
@@ -138,15 +138,15 @@ void knight_moves_white_works_as_intended(std::string test, int mvs){
 
 void knight_moves_black_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , bkn, b  , bp , b  , b  },
-     {b  , bp , b  , b  , b  , wp , b  , b  },
-     {b  , wp , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , bkn, b  , bp , b  , b  ,
+     b  , bp , b  , b  , b  , wp , b  , b  ,
+     b  , wp , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(0, 0);
@@ -157,15 +157,15 @@ void knight_moves_black_works_as_intended(std::string test, int mvs){
 
 void bishop_moves_white_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , bb , b  , bp , b  , b  },
-     {b  , b  , b  , b  , b  , wp , b  , b  },
-     {b  , bp , b  , b  , b  , wb , b  , b  },
-     {b  , wp , b  , bp , b  , b  , b  , b  },
-     {b  , b  , b  , wp , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , bb , b  , bp , b  , b  ,
+     b  , b  , b  , b  , b  , wp , b  , b  ,
+     b  , bp , b  , b  , b  , wb , b  , b  ,
+     b  , wp , b  , bp , b  , b  , b  , b  ,
+     b  , b  , b  , wp , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
@@ -176,15 +176,15 @@ void bishop_moves_white_works_as_intended(std::string test, int mvs){
 
 void bishop_moves_black_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , bb , b  , bp , b  , b  },
-     {b  , b  , b  , b  , b  , wp , b  , b  },
-     {b  , bp , b  , b  , b  , wb , b  , b  },
-     {b  , wp , b  , bp , b  , b  , b  , b  },
-     {b  , b  , b  , wp , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , bb , b  , bp , b  , b  ,
+     b  , b  , b  , b  , b  , wp , b  , b  ,
+     b  , bp , b  , b  , b  , wb , b  , b  ,
+     b  , wp , b  , bp , b  , b  , b  , b  ,
+     b  , b  , b  , wp , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(0, 0);
@@ -195,15 +195,15 @@ void bishop_moves_black_works_as_intended(std::string test, int mvs){
 
 void rook_moves_white_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {br , b  , b  , b  , b  , b  , b  , br }, 
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , wr , b  , b  , b  , b  , b  },
-     {bp , b  , b  , b  , b  , b  , b  , b  },
-     {wp , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , br , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {wr , b  , b  , b  , b  , b  , b  , wr }
+    std::array<Piece*, 64> chessBoard = {{
+     br , b  , b  , b  , b  , b  , b  , br , 
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , wr , b  , b  , b  , b  , b  ,
+     bp , b  , b  , b  , b  , b  , b  , b  ,
+     wp , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , br , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     wr , b  , b  , b  , b  , b  , b  , wr 
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
@@ -214,15 +214,15 @@ void rook_moves_white_works_as_intended(std::string test, int mvs){
 
 void rook_moves_black_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {br , b  , b  , b  , b  , b  , b  , br }, 
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , wr , b  , b  , b  , b  , b  },
-     {bp , b  , b  , b  , b  , b  , b  , b  },
-     {wp , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , br , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {wr , b  , b  , b  , b  , b  , b  , wr }
+    std::array<Piece*, 64> chessBoard = {{
+     br , b  , b  , b  , b  , b  , b  , br , 
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , wr , b  , b  , b  , b  , b  ,
+     bp , b  , b  , b  , b  , b  , b  , b  ,
+     wp , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , br , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     wr , b  , b  , b  , b  , b  , b  , wr 
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(0, 0);
@@ -233,15 +233,15 @@ void rook_moves_black_works_as_intended(std::string test, int mvs){
 
 void queen_moves_white_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , b  , bp , b  , b  , bp },
-     {b  , b  , b  , b  , wp , b  , b  , wp },
-     {b  , b  , b  , wq , b  , b  , b  , b  },
-     {b  , b  , b  , b  , bq , b  , b  , b  },
-     {bp , b  , b  , bp , b  , b  , b  , b  },
-     {wp , b  , b  , wp , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , b  , bp , b  , b  , bp ,
+     b  , b  , b  , b  , wp , b  , b  , wp ,
+     b  , b  , b  , wq , b  , b  , b  , b  ,
+     b  , b  , b  , b  , bq , b  , b  , b  ,
+     bp , b  , b  , bp , b  , b  , b  , b  ,
+     wp , b  , b  , wp , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
@@ -252,15 +252,15 @@ void queen_moves_white_works_as_intended(std::string test, int mvs){
 
 void queen_moves_black_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {b  , b  , b  , b  , b  , b  , b  , b  }, 
-     {b  , b  , b  , b  , bp , b  , b  , bp },
-     {b  , b  , b  , b  , wp , b  , b  , wp },
-     {b  , b  , b  , wq , b  , b  , b  , b  },
-     {b  , b  , b  , b  , bq , b  , b  , b  },
-     {bp , b  , b  , bp , b  , b  , b  , b  },
-     {wp , b  , b  , wp , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+     b  , b  , b  , b  , b  , b  , b  , b  , 
+     b  , b  , b  , b  , bp , b  , b  , bp ,
+     b  , b  , b  , b  , wp , b  , b  , wp ,
+     b  , b  , b  , wq , b  , b  , b  , b  ,
+     b  , b  , b  , b  , bq , b  , b  , b  ,
+     bp , b  , b  , bp , b  , b  , b  , b  ,
+     wp , b  , b  , wp , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(0, 0);
@@ -271,15 +271,15 @@ void queen_moves_black_works_as_intended(std::string test, int mvs){
 
 void king_moves_white_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {br , b  , b  , b  , bkg, b  , b  , br }, 
-     {bp , b  , b  , b  , b  , b  , b  , bp },
-     {wp , b  , b  , b  , b  , b  , b  , wp },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {bp , b  , b  , b  , b  , b  , b  , bp },
-     {wp , b  , b  , b  , b  , b  , b  , wp },
-     {wr , b  , b  , b  , wkg, b  , b  , wr }
+    std::array<Piece*, 64> chessBoard = {{
+     br , b  , b  , b  , bkg, b  , b  , br , 
+     bp , b  , b  , b  , b  , b  , b  , bp ,
+     wp , b  , b  , b  , b  , b  , b  , wp ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     bp , b  , b  , b  , b  , b  , b  , bp ,
+     wp , b  , b  , b  , b  , b  , b  , wp ,
+     wr , b  , b  , b  , wkg, b  , b  , wr 
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(1, 0);
@@ -290,15 +290,15 @@ void king_moves_white_works_as_intended(std::string test, int mvs){
 
 void king_moves_black_works_as_intended(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {br , b  , b  , b  , bkg, b  , b  , br }, 
-     {bp , b  , b  , b  , b  , b  , b  , bp },
-     {wp , b  , b  , b  , b  , b  , b  , wp },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {bp , b  , b  , b  , b  , b  , b  , bp },
-     {wp , b  , b  , b  , b  , b  , b  , wp },
-     {wr , b  , b  , b  , wkg, b  , b  , wr }
+    std::array<Piece*, 64> chessBoard = {{
+     br , b  , b  , b  , bkg, b  , b  , br , 
+     bp , b  , b  , b  , b  , b  , b  , bp ,
+     wp , b  , b  , b  , b  , b  , b  , wp ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     bp , b  , b  , b  , b  , b  , b  , bp ,
+     wp , b  , b  , b  , b  , b  , b  , wp ,
+     wr , b  , b  , b  , wkg, b  , b  , wr 
     }};
     Board* b = new Board(chessBoard);
     std::vector<int>* moves = b->getMoves(0, 0);
@@ -310,15 +310,15 @@ void king_moves_black_works_as_intended(std::string test, int mvs){
 void castle_white_not_valid_test1(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {br , b  , b  , b  , bkg, b  , b  , br }, 
-     {bp , b  , b  , b  , wp , b  , b  , bp },
-     {wp , b  , b  , b  , b  , b  , b  , wp },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {bp , b  , b  , b  , b  , b  , b  , bp },
-     {wp , b  , b  , b  , bp , b  , b  , wp },
-     {wr , b  , b  , b  , wkg, b  , b  , wr }
+    std::array<Piece*, 64> chessBoard = {{
+     br , b  , b  , b  , bkg, b  , b  , br , 
+     bp , b  , b  , b  , wp , b  , b  , bp ,
+     wp , b  , b  , b  , b  , b  , b  , wp ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     bp , b  , b  , b  , b  , b  , b  , bp ,
+     wp , b  , b  , b  , bp , b  , b  , wp ,
+     wr , b  , b  , b  , wkg, b  , b  , wr 
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -335,15 +335,15 @@ void castle_white_not_valid_test1(std::string test, int mvs){
 void castle_black_not_valid_test1(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-     {br , b  , b  , b  , bkg, b  , b  , br }, 
-     {bp , b  , b  , b  , wp , b  , b  , bp },
-     {wp , b  , b  , b  , b  , b  , b  , wp },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {b  , b  , b  , b  , b  , b  , b  , b  },
-     {bp , b  , b  , b  , b  , b  , b  , bp },
-     {wp , b  , b  , b  , bp , b  , b  , wp },
-     {wr , b  , b  , b  , wkg, b  , b  , wr }
+    std::array<Piece*, 64> chessBoard = {{
+     br , b  , b  , b  , bkg, b  , b  , br , 
+     bp , b  , b  , b  , wp , b  , b  , bp ,
+     wp , b  , b  , b  , b  , b  , b  , wp ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     b  , b  , b  , b  , b  , b  , b  , b  ,
+     bp , b  , b  , b  , b  , b  , b  , bp ,
+     wp , b  , b  , b  , bp , b  , b  , wp ,
+     wr , b  , b  , b  , wkg, b  , b  , wr 
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -360,15 +360,15 @@ void castle_black_not_valid_test1(std::string test, int mvs){
 void king_in_checkmate_no_moves(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq, bkg , bb , b  , br }, 
-        {bp , bp , bp , bp , b  , wq , bp , bp },
-        {b  , b  , b  , b  , b  , bkn, b  , b  },
-        {b  , b  , b  , b  , bp , b  , b  , b  },
-        {b  , b  , wb , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {wp , wp , wp , wp , wp , wp , wp , wp },
-        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    std::array<Piece*, 64> chessBoard = {{
+        br , bkn, bb , bq, bkg , bb , b  , br , 
+        bp , bp , bp , bp , b  , wq , bp , bp ,
+        b  , b  , b  , b  , b  , bkn, b  , b  ,
+        b  , b  , b  , b  , bp , b  , b  , b  ,
+        b  , b  , wb , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        wp , wp , wp , wp , wp , wp , wp , wp ,
+        wr , wkn, wb , wq, wkg , wb , wkn, wr 
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -387,15 +387,15 @@ void king_in_checkmate_no_moves(std::string test, int mvs){
 void king_in_check_moves_correctly(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq, bkg , bb , b  , br }, 
-        {bp , bp , bp , bp , b  , b  , bp , bp },
-        {b  , b  , b  , b  , b  , bkn, b  , b  },
-        {b  , b  , b  , b  , bp , b  , b  , wq },
-        {b  , b  , wb , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {wp , wp , wp , wp , wp , wp , wp , wp },
-        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    std::array<Piece*, 64> chessBoard = {{
+        br , bkn, bb , bq, bkg , bb , b  , br , 
+        bp , bp , bp , bp , b  , b  , bp , bp ,
+        b  , b  , b  , b  , b  , bkn, b  , b  ,
+        b  , b  , b  , b  , bp , b  , b  , wq ,
+        b  , b  , wb , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        wp , wp , wp , wp , wp , wp , wp , wp ,
+        wr , wkn, wb , wq, wkg , wb , wkn, wr 
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -414,15 +414,15 @@ void king_in_check_moves_correctly(std::string test, int mvs){
 void king_in_pin_moves_correctly(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
-        {bp , bp , bp , bp , b  , bp , bp , bp },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , bp , b  , b  , wq },
-        {b  , b  , wb , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {wp , wp , wp , wp , wp , wp , wp , wp },
-        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
+    std::array<Piece*, 64> chessBoard = {{
+        br , bkn, bb , bq, bkg , bb , bkn, br , 
+        bp , bp , bp , bp , b  , bp , bp , bp ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , bp , b  , b  , wq ,
+        b  , b  , wb , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        wp , wp , wp , wp , wp , wp , wp , wp ,
+        wr , wkn, wb , wq, wkg , wb , wkn, wr 
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -486,21 +486,21 @@ void correct_number_of_starting_moves_at_depth_n_test_all(int n, int size){
     BoardInterface* interface = new BoardInterface();
     int actualSize = getMovesAtDepth(interface, 1, n, 0);
     std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
-    // assert (actualSize == size);
+    assert (actualSize == size);
 }
 
 void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(int n, int size, bool turn){
     std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq,  b  , bkg, b  , br }, 
-        {bp , bp , b  , wp , bb , bp , bp , bp },
-        {b  , b  , bp , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , wb , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {wp , wp , wp , b  , wkn, bkn, wp , wp },
-        {wr , wkn, wb , wq, wkg , b  , b  , wr }
+    std::array<Piece*, 64> chessBoard = {{
+        br , bkn, bb , bq,  b  , bkg, b  , br , 
+        bp , bp , b  , wp , bb , bp , bp , bp ,
+        b  , b  , bp , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , b  , wb , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        wp , wp , wp , b  , wkn, bkn, wp , wp ,
+        wr , wkn, wb , wq, wkg , b  , b  , wr 
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -512,15 +512,15 @@ void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(int n, int
 void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(int n, int size, bool turn){
     std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {b  , b  , b  , b  , b  , b  , b  , bkg}, 
-        {b  , b  , bp , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , bp },
-        {wkg, wp , b  , b  , b  , b  , b  , br },
-        {b  , b  , b  , b  , b  , b  , b  , bp },
-        {b  , b  , b  , b  , b  , b  , b  , wp },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+        b  , b  , b  , b  , b  , b  , b  , bkg, 
+        b  , b  , bp , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , bp ,
+        wkg, wp , b  , b  , b  , b  , b  , br ,
+        b  , b  , b  , b  , b  , b  , b  , bp ,
+        b  , b  , b  , b  , b  , b  , b  , wp ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -532,15 +532,55 @@ void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(int n, int
 void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(int n, int size, bool turn){
     std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
     BoardInterface* interface = new BoardInterface();
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {b  , b  , b  , b  , b  , b  , b  , bkg}, 
-        {b  , b  , bp , b  , b  , b  , b  , b  },
-        {wkg, b  , b  , b  , b  , b  , b  , bp },
-        {b  , wp , b  , b  , b  , b  , b  , br },
-        {b  , b  , b  , b  , b  , b  , b  , bp },
-        {b  , b  , b  , b  , b  , b  , b  , wp },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  }
+    std::array<Piece*, 64> chessBoard = {{
+        b  , b  , b  , b  , b  , b  , b  , bkg, 
+        b  , b  , bp , b  , b  , b  , b  , b  ,
+        wkg, b  , b  , b  , b  , b  , b  , bp ,
+        b  , wp , b  , b  , b  , b  , b  , br ,
+        b  , b  , b  , b  , b  , b  , b  , bp ,
+        b  , b  , b  , b  , b  , b  , b  , wp ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    int actualSize = getMovesAtDepth(interface, turn, n, 0);
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
+void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_4(int n, int size, bool turn){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<Piece*, 64> chessBoard = {{
+        b  , b  , b  , b  , b  , b  , b  , b  , 
+        b  , b  , b  , b  , b  , bp , bkg, b  ,
+        b  , b  , b  , b  , b  , wp , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        bp , b  , bp , b  , b  , b  , b  , b  ,
+        wp , b  , wp , bp , b  , b  , b  , b  ,
+        wkg, b  , b  , wp , b  , b  , b  , b  
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    int actualSize = getMovesAtDepth(interface, turn, n, 0);
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
+void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(int n, int size, bool turn){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<Piece*, 64> chessBoard = {{
+        bkg, b  , b  , bp , b  , b  , b  , b  , 
+        bp , b  , bp , wp , b  , b  , b  , b  ,
+        wp , b  , wp , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , b  , b  , bp , b  , b  , b  , b  ,
+        bp , b  , bp , wp , b  , bp , b  , b  ,
+        wp , b  , wp , b  , b  , wp , bp , b  ,
+        wr , b  , b  , b  , wkg, b  , wp , b  
     }};
     Board* b = new Board(chessBoard);
     interface->setBoard(b);
@@ -572,22 +612,30 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test(1, 20);
     // correct_number_of_starting_moves_at_depth_n_test(2, 400);
     // correct_number_of_starting_moves_at_depth_n_test(3, 5362);
-    correct_number_of_starting_moves_at_depth_n_test(4, 71852);
+    // correct_number_of_starting_moves_at_depth_n_test(4, 71852);
     // correct_number_of_starting_moves_at_depth_n_test(6, 9132484);
     // correct_number_of_starting_moves_at_depth_n_test_all(1, 20);
     // correct_number_of_starting_moves_at_depth_n_test_all(2, 400);
     // correct_number_of_starting_moves_at_depth_n_test_all(3, 8902);
     // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
-    correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
+    // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
     // correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(4, 2103487, true);
-    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(5, 89941194, true);
-    //correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(1, 11, false);
-    //correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(2, 35, false);
-    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(1, 11, false);
-    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(2, 45, false);
+    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(5, 89941194, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(1, 11, false);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(2, 35, false);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(1, 11, false);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(2, 45, false);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_4(1, 2, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_4(2, 7, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_4(3, 7, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(1, 5, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(2, 4, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(3, 16, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(4, 22, true);
+    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(5, 104, true);
     return 0;
 }

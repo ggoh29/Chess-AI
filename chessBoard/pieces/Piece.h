@@ -13,7 +13,7 @@ class Piece{
     bool isSameTeam(bool color, Piece* piece);
     virtual int pieceEnum();
     virtual std::string pieceAscii();
-    virtual std::vector<int>* getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove);
+    virtual std::vector<int>* getMoves(int i, int j, std::array<Piece*, 64> chessBoard, int previousMove);
 };
 
 #endif

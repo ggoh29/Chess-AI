@@ -19,6 +19,7 @@ class BoardInterface{
     void undoMove();
     void undoMove(bool turn);
     void printMovesSoFar();
+    void printMove(int move);
     std::vector<int>* getMoves();
     std::vector<int>* getMoves(bool turn);
     std::vector<int>* getValidMoves();

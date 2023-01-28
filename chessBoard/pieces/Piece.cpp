@@ -18,7 +18,7 @@ std::string Piece::pieceAscii(){
         return " ";
 };
 
-std::vector<int>* Piece::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
+std::vector<int>* Piece::getMoves(int i, int j, std::array<Piece*, 64> chessBoard, int previousMove){
     std::vector<int>* empty = new std::vector<int>();
     return empty;
 }; 

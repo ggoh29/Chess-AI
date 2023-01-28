@@ -17,7 +17,7 @@ std::string Queen::pieceAscii(){
         return colour ? "♛" : "♕";
 };
 
-std::vector<int>* Queen::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
+std::vector<int>* Queen::getMoves(int i, int j, std::array<Piece*, 64> chessBoard, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
     for (int x = -1; x <= 1; x ++){
         for (int y = -1; y <= 1; y++){
@@ -27,8 +27,8 @@ std::vector<int>* Queen::getMoves(int i, int j, std::array<std::array<Piece*, 8>
                 continue;
             }
             for (;0 <= xx && xx < 8 && 0 <= yy && yy < 8;){
-                bool cond = !isSameTeam(colour, chessBoard[xx][yy]);
-                if ((chessBoard[xx][yy] -> pieceEnum()) == 0 | cond){
+                bool cond = !isSameTeam(colour, chessBoard[xx * 8 + yy]);
+                if ((chessBoard[xx * 8 + yy] -> pieceEnum()) == 0 | cond){
                     std::array<int, 4> move = {i, j, xx, yy};
                     int moveEncoded = mv->encodeMove(move);
                     moves->push_back(moveEncoded);

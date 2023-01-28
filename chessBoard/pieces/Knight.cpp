@@ -18,7 +18,7 @@ std::string Knight::pieceAscii(){
         return colour ? "♞" : "♘";
 };
 
-std::vector<int>* Knight::getMoves(int i, int j, std::array<std::array<Piece*, 8>, 8> chessBoard, int previousMove){
+std::vector<int>* Knight::getMoves(int i, int j, std::array<Piece*, 64> chessBoard, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
     for (int x_dir : {-1, +1}){
         for (int y_dir : {-1, +1}){
@@ -26,7 +26,7 @@ std::vector<int>* Knight::getMoves(int i, int j, std::array<std::array<Piece*, 8
                 for (int y_mag : {1, 2}){
                     int x = i + x_mag * x_dir;
                     int y = j + y_mag * y_dir;
-                    if (x_mag != y_mag && 0 <= x && x < 8 && 0 <= y && y < 8 && ((chessBoard[x][y] -> pieceEnum()) == 0 || !isSameTeam(colour, chessBoard[x][y]))){
+                    if (x_mag != y_mag && 0 <= x && x < 8 && 0 <= y && y < 8 && ((chessBoard[x * 8 + y] -> pieceEnum()) == 0 || !isSameTeam(colour, chessBoard[x * 8 + y]))){
                         std::array<int, 4> move = {i, j, x, y};
                         int moveEncoded = mv->encodeMove(move);
                         moves->push_back(moveEncoded);

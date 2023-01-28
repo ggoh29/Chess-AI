@@ -39,7 +39,7 @@ class Board{
     static char charlist[8];
     static Piece* plist[16];
     static BoardHash* hash;
-    std::array<std::array<Piece*, 8>, 8> chessBoard;
+    std::array<Piece*, 64> chessBoard;
 
     bool bkgHasMoved;
     bool br1HasMoved;
@@ -64,9 +64,9 @@ class Board{
         bool wr2HasMoved
         );
 
-        Board(std::array<std::array<Piece*, 8>, 8> chessBoard);
+        Board(std::array<Piece*, 64> chessBoard);
 
-        Board(std::array<std::array<Piece*, 8>, 8> chessBoard,
+        Board(std::array<Piece*, 64> chessBoard,
         bool bkgHasMoved,
         bool br1HasMoved,
         bool br2HasMoved,
@@ -75,7 +75,6 @@ class Board{
         bool wr2HasMoved
         );
 
-        ~Board();
         bool pieceTaken();
         unsigned long getHash();
         std::string getString();

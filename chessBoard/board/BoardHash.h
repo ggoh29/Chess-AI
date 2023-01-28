@@ -8,7 +8,7 @@ class BoardHash{
   static std::array<unsigned long, 64 * 13> hashTable;
   public:
     BoardHash();
-    unsigned long getHash(std::array<std::array<Piece*, 8>, 8> chessBoard);
+    unsigned long getHash(std::array<Piece*, 64> chessBoard);
 };
 
 #endif

@@ -7,6 +7,7 @@ undoMoveslist(new std::vector<int>()),
 turn(true){}
 
 void BoardInterface::setBoard(Board* b){
+    delete this->board;
     this->board = b;
 }
 
@@ -44,6 +45,11 @@ void BoardInterface::undoMove(bool turn){
         moveslist->pop_back();
     }
 };
+
+void BoardInterface::printMove(int move){
+    board->printMove(move);
+    std::cout << std::endl;
+}
 
 std::vector<int>* BoardInterface::getMoves(){
     return this->getMoves(this->turn);
