@@ -86,12 +86,13 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
     for (auto dir : directions1){
         int x = i_king + dir[0];
         int y = j_king + dir[1];
-        if (0 <= x && x < 8 && 0 <= y && y < 8){
-            if (this->board->getPieceEnumAt(x, y) == (turn ? 14 : 6)){
+        if ((0 <= x) && (x < 8) && (0 <= y) && (y < 8)){
+            int e = this->board->getPieceEnumAt(x, y);
+            if (e == (turn ? 14 : 6)){
                 return false;
             }
             int dr = (turn ? -1 : 1);
-            if (dir[0] == dr && dir[1] != 0 && (this->board->getPieceEnumAt(x, y) == (turn ? 9 : 1))){
+            if ((dir[0] == dr) && (dir[1] != 0) && (e == (turn ? 9 : 1))){
                 return false;
             }
         }
@@ -103,7 +104,7 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
                 for (int y_mag : {1, 2}){
                     int x = i_king + x_mag * x_dir;
                     int y = j_king + y_mag * y_dir;
-                    if (x_mag != y_mag && 0 <= x && x < 8 && 0 <= y && y < 8 && (this->board->getPieceEnumAt(x, y) == (turn ? 11 : 3))){
+                    if ((x_mag != y_mag) && (0 <= x) && (x < 8) && (0 <= y) && (y < 8) && (this->board->getPieceEnumAt(x, y) == (turn ? 11 : 3))){
                         return false;
                     }
                 }
@@ -115,10 +116,11 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
     for (auto direction : directions2){
         int xx = i_king + direction[0];
         int yy = j_king + direction[1];
-        for (;0 <= xx && xx < 8 && 0 <= yy && yy < 8;){
-            if ((this->board->getPieceEnumAt(xx, yy) == (turn ? 12 : 4)) || (this->board->getPieceEnumAt(xx, yy) == (turn ? 13 : 5))){
+        for (;(0 <= xx) && (xx < 8) && (0 <= yy) && (yy < 8);){
+            int e = this->board->getPieceEnumAt(xx, yy);
+            if ((e == (turn ? 12 : 4)) || (e == (turn ? 13 : 5))){
                 return false;
-            } else if (this->board->getPieceEnumAt(xx, yy) != 0){
+            } else if (e != 0){
                 break;
             }
             xx += direction[0];
@@ -126,14 +128,15 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
         }
     }
     // no bishop and queen check
-    for (int x = 0; x <= 1; x ++){
+    for (int x = 0; x <= 1; x++){
         for (int y = 0; y <= 1; y++){
             int xx = x ? i_king + 1 : i_king - 1;
             int yy = y ? j_king + 1 : j_king - 1;
-            while (0 <= xx && xx < 8 && 0 <= yy && yy < 8){
-                if ((this->board->getPieceEnumAt(xx, yy) == (turn ? 10 : 2)) || (this->board->getPieceEnumAt(xx, yy) == (turn ? 13 : 5))){
+            while ((0 <= xx) && (xx < 8) && (0 <= yy) && (yy < 8)){
+                int e = this->board->getPieceEnumAt(xx, yy);
+                if ((e == (turn ? 10 : 2)) || (e == (turn ? 13 : 5))){
                     return false;
-                } else if (this->board->getPieceEnumAt(xx, yy) != 0) {
+                } else if (e != 0) {
                     break;
                 }
                 xx = x ? xx + 1 : xx - 1;
@@ -228,7 +231,7 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
         this->board->putPieceEnum(move[0], move[1], turn ? 1 : 9);
     } else {
         this->board->putPieceEnum(move[0], move[1], this->board->getPieceEnumAt(move[2], move[3]));
-        this->board->putPieceEnum(move[2], move[3], 0);
+        this->board->putPieceEnum(move[2], move[3], capturedPiece);
     }
 }
 

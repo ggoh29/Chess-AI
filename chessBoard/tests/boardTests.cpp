@@ -412,6 +412,33 @@ void king_in_check_moves_correctly(std::string test, int mvs){
     assert (validMovesSize == mvs);
 }
 
+void king_in_check_moves_correctly2(std::string test, int mvs){
+    std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<Piece*, 64> chessBoard = {{
+        br , bkn, bb , b , bkg , bb , b  , br , 
+        bp , bp , bp , bp , b  , bp , bp , bp ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , bp , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , bq ,
+        b  , b  , b  , b  , b  , wp , b  , b  ,
+        wp , wp , wp , wp , wp , b  , wp , b  ,
+        wr , wkn, wb , wq, wkg , wb , wkn, wr 
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    std::vector<int>* moves = interface->getMoves(1);
+    int movesSize = moves->size();
+    std::cout << "Testing: " << test << " test returned " << movesSize << " moves." << std::endl;
+    std::vector<int>* validMoves = interface->getValidMoves(1);
+    int validMovesSize = 0;
+    if (!validMoves->empty()){
+        validMovesSize = validMoves->size();
+    }
+    std::cout << "Testing: " << test << " test returned " << validMovesSize << " valid moves." << std::endl;
+    assert (validMovesSize == mvs);
+}
+
 void king_in_pin_moves_correctly(std::string test, int mvs){
     std::cout << "Testing: " << test << " test returns "<< mvs << " moves" << std::endl;
     BoardInterface* interface = new BoardInterface();
@@ -468,17 +495,16 @@ void correct_number_of_starting_moves_at_depth_n_test(int n, int size){
 
 int getMovesAtDepth(BoardInterface* interface, bool turn, int depth, int previousMove){
     int results = 0;
-    if (depth == 0){
-        return 1;
-    } else {
-        std::vector<int>* validMoves = interface->getValidMoves(turn);
-        for (auto validMove : *validMoves){
-            interface->makeMove(turn, validMove);
-            results += getMovesAtDepth(interface, !turn, depth-1, validMove);
-            interface->undoMove(turn);
-        }
-        delete validMoves;
+    std::vector<int>* validMoves = interface->getValidMoves(turn);
+    if (depth == 1){
+        return validMoves->size();
     }
+    for (auto validMove : *validMoves){
+        interface->makeMove(turn, validMove);
+        results += getMovesAtDepth(interface, !turn, depth-1, validMove);
+        interface->undoMove(turn);
+    }
+    delete validMoves;
     return results;
 }
 
@@ -609,6 +635,7 @@ int main(){
     castle_black_not_valid_test1("black king castling", 12);
     king_in_checkmate_no_moves("black king checkmated", 0);
     king_in_check_moves_correctly("black king in check", 3);
+    king_in_check_moves_correctly2("white king in check", 2);
     king_in_pin_moves_correctly("black king in pin", 27);
     // correct_number_of_starting_moves_at_depth_n_test(1, 20);
     // correct_number_of_starting_moves_at_depth_n_test(2, 400);
@@ -619,7 +646,7 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all(2, 400);
     // correct_number_of_starting_moves_at_depth_n_test_all(3, 8902);
     // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
-    // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
+    correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
     // correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, true);
@@ -637,6 +664,6 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(2, 4, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(3, 16, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(4, 22, true);
-    // orrect_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(5, 101, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(5, 101, true);
     return 0;
 }
