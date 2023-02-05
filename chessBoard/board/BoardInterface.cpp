@@ -58,7 +58,7 @@ std::vector<int>* BoardInterface::getMoves(){
 std::vector<int>* BoardInterface::getMoves(bool turn){
     int lastMove = 0;
     if (!moveslist->empty()){
-        int lastMove = moveslist->back();
+        lastMove = moveslist->back();
     }
     return board->getMoves(turn, lastMove);
 }

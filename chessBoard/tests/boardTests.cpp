@@ -616,6 +616,26 @@ void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(int n, int
     assert (actualSize == size);
 }
 
+void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_6(int n, int size, bool turn){
+    std::cout << "Testing: correct number of moves at depth " << n  << " return " << size << " moves." << std::endl;
+    BoardInterface* interface = new BoardInterface();
+    std::array<Piece*, 64> chessBoard = {{
+        br , bkn, bb , bq,  b  , bkg, b  , br , 
+        bp , bp , b  , wp , bb , bp , bp , bp ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        wp , b  , bp  , b  , b  , b  , b  , b  ,
+        b  , b  , wb , b  , b  , b  , b  , b  ,
+        b  , b  , b  , b  , b  , b  , b  , b  ,
+        b  , wp , wp , b  , wkn, bkn, wp , wp ,
+        wr , wkn, wb , wq, wkg , b  , b  , wr 
+    }};
+    Board* b = new Board(chessBoard);
+    interface->setBoard(b);
+    int actualSize = getMovesAtDepth(interface, turn, n, 0);
+    std::cout << "Testing: correct number of moves at depth " << n  << " returned " << actualSize << " moves." << std::endl;
+    assert (actualSize == size);
+}
+
 int main(){
     en_passant_works_as_intended("white en passant", 3);
     promotion_works_as_intended("white promotion", 12);
@@ -646,13 +666,13 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all(2, 400);
     // correct_number_of_starting_moves_at_depth_n_test_all(3, 8902);
     // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
-    correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
+    // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
     // correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(4, 2103487, true);
-    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(5, 89941194, true);
+    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(5, 89941194, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(1, 11, false);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(2, 35, false);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(1, 11, false);
@@ -665,5 +685,6 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(3, 16, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(4, 22, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(5, 101, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_6(2, 1318, false);
     return 0;
 }
