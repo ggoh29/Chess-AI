@@ -8,9 +8,8 @@ class Knight:public Piece{
   public:
     Knight(bool colour);
     int pieceEnum();
-    bool isSameTeam(bool colour, Piece* piece);
     std::string pieceAscii();
-    std::vector<int>* getMoves(int i, int j, std::array<Piece*, 64> chessBoard, int previousMove);
+    std::vector<int>* getMoves(int i, int j,  BoardRepr* board, int previousMove);
 };
 
 #endif

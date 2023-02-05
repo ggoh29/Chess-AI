@@ -6,26 +6,18 @@ int King::pieceEnum(){
         return colour ? 6 : 14;
 };
 
-bool King::isSameTeam(bool colour, Piece* piece){
-    if (piece->pieceEnum() == 0){
-        return true;
-    }
-    int mask = 8;
-    return ((((piece -> pieceEnum()) & mask) >> 3) != colour);
-}
-
 std::string King::pieceAscii(){
         return colour ? "♚" : "♔";
 };
 
 
-std::vector<int>* King::getMoves(int i, int j, std::array<Piece*, 64> chessBoard, int previousMove){
+std::vector<int>* King::getMoves(int i, int j, BoardRepr* board, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
     int directions[8][2] = {{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {-1, -1}};
     for (auto dir : directions){
         int x = i + dir[0];
         int y = j + dir[1];
-        if (0 <= x && x < 8 && 0 <= y && y < 8 && ((chessBoard[x * 8 + y] -> pieceEnum()) == 0 || !isSameTeam(colour, chessBoard[x * 8 + y]))){
+        if (0 <= x && x < 8 && 0 <= y && y < 8 && (board -> getPieceEnumAt(x, y) == 0 || !isSameTeam(colour, board -> getPieceEnumAt(x, y)))){
             std::array<int, 4> move = {i, j, x, y};
             int moveEncoded = mv->encodeMove(move);
             moves->push_back(moveEncoded);
@@ -39,9 +31,9 @@ std::vector<int>* King::getMoves(int i, int j, std::array<Piece*, 64> chessBoard
     }
 
     bool canLongCastle = inCastlingSpot;
-    if (canLongCastle && (chessBoard[castlingRow * 8]->pieceEnum() == (colour ? 4 : 12))){
+    if (canLongCastle && (board -> getPieceEnumAt(castlingRow, 0) == (colour ? 4 : 12))){
         for (int x : {1, 2, 3}){
-            canLongCastle &= (chessBoard[i * 8 + x]->pieceEnum() == 0);
+            canLongCastle &= (board -> getPieceEnumAt(i, x) == 0);
         }
         if (canLongCastle){
             std::array<int, 4> move = {i, j, i, 2};
@@ -51,9 +43,9 @@ std::vector<int>* King::getMoves(int i, int j, std::array<Piece*, 64> chessBoard
     }
     
     bool canShortCastle = inCastlingSpot;
-    if (canShortCastle && (chessBoard[castlingRow * 8 + 7]->pieceEnum() == (colour ? 4 : 12))){
+    if (canShortCastle && (board -> getPieceEnumAt(castlingRow, 7) == (colour ? 4 : 12))){
         for (int x : {5, 6}){
-            canShortCastle &= (chessBoard[i * 8 + x]->pieceEnum() == 0);
+            canShortCastle &= (board -> getPieceEnumAt(i, x) == 0);
         }
         if (canShortCastle){
             std::array<int, 4> move = {i, j, i, 6};

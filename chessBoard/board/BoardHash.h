@@ -1,6 +1,7 @@
 #ifndef BOARDHASH_H
 #define BOARDHASH_H
 #include "../pieces/Piece.h"
+#include "./BoardRepr.h"
 #include <array>
 
 class BoardHash{
@@ -8,7 +9,7 @@ class BoardHash{
   static std::array<unsigned long, 64 * 13> hashTable;
   public:
     BoardHash();
-    unsigned long getHash(std::array<Piece*, 64> chessBoard);
+    unsigned long getHash(BoardRepr* board);
 };
 
 #endif

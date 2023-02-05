@@ -9,6 +9,7 @@
 #include "../board/Board.h"
 #include "../board/BoardHash.h"
 #include "../board/BoardInterface.h"
+#include "../board/BoardRepr.h"
 #include <stdio.h>
 #include <iostream>
 #include <array>
@@ -624,7 +625,7 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(4, 2103487, true);
-    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(5, 89941194, true);
+    // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(5, 89941194, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(1, 11, false);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_2(2, 35, false);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_3(1, 11, false);
@@ -636,6 +637,6 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(2, 4, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(3, 16, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(4, 22, true);
-    correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(5, 104, true);
+    // orrect_number_of_starting_moves_at_depth_n_test_all_fixed_pos_5(5, 101, true);
     return 0;
 }

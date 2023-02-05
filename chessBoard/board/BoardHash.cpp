@@ -4,11 +4,11 @@ BoardHash::BoardHash(){};
 
 int BoardHash::index[16] = {0, 1, 2, 3, 4, 5, 6, 0, 0, 7, 8, 9, 10, 11, 12, 0};
 
-unsigned long BoardHash::getHash(std::array<Piece*, 64> chessBoard){
+unsigned long BoardHash::getHash(BoardRepr* board){
     long value = 0;
     for (int i = 0; i < 8; i++){
         for (int j = 0; j < 8; j++){
-            int e = chessBoard[i * 8 + j]->pieceEnum();
+            int e = board->getPieceEnumAt(i, j);
             int in = index[e];
             value ^= hashTable[(i * 8 + j) + (64 * in)];
         }

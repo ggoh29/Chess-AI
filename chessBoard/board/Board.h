@@ -8,6 +8,7 @@
 #include "../pieces/Queen.h"
 #include "../pieces/King.h"
 #include "../moves/Moves.h"
+#include "./BoardRepr.h"
 #include "BoardHash.h"
 #include <stdio.h>
 #include <iostream>
@@ -39,7 +40,8 @@ class Board{
     static char charlist[8];
     static Piece* plist[16];
     static BoardHash* hash;
-    std::array<Piece*, 64> chessBoard;
+
+    BoardRepr* board;
 
     bool bkgHasMoved;
     bool br1HasMoved;
@@ -51,18 +53,6 @@ class Board{
     public:
 
         Board();
-
-        Board(std::array<long,4> encoding);
-        Board(std::string encoding);
-
-        Board(std::array<long,4> encoding, 
-        bool bkgHasMoved,
-        bool br1HasMoved,
-        bool br2HasMoved,
-        bool wkgHasMoved,
-        bool wr1HasMoved,
-        bool wr2HasMoved
-        );
 
         Board(std::array<Piece*, 64> chessBoard);
 
@@ -77,8 +67,6 @@ class Board{
 
         bool pieceTaken();
         unsigned long getHash();
-        std::string getString();
-        std::array<long,4> encodeBoard();
         int pieceEnumAtLocation(int i, int j);
         int getCastlingState();
         void setCastlingState(int castlingState);
