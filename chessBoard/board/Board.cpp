@@ -185,7 +185,7 @@ void Board::makeMove(bool turn, int mv){
         (turn ? wr2HasMoved : br2HasMoved) = true;
     } else if ((1 << 31) & mv){
         this->board->putPieceEnum(move[2], move[3], this->board->getPieceEnumAt(move[0], move[1]));
-        this->board->putPieceEnum((move[2] + turn ? 1 : -1), move[3], 0);
+        this->board->putPieceEnum((move[2] + (turn ? 1 : -1)), move[3], 0);
         this->board->putPieceEnum(move[0], move[1], 0);
     } else if ((1 << 30) & mv){
         int piece = moveDocoder.decodePromotion(mv);
@@ -224,7 +224,7 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
         this->board->putPieceEnum(king, 5, 0);
     } else if ((1 << 31) & undoMove){
         this->board->putPieceEnum(move[0], move[1], this->board->getPieceEnumAt(move[2], move[3]));
-        this->board->putPieceEnum((move[2] + turn ? 1 : -1), move[3], (turn ? 9 : 1));
+        this->board->putPieceEnum((move[2] + (turn ? 1 : -1)), move[3], (turn ? 9 : 1));
         this->board->putPieceEnum(move[2], move[3], 0);
     } else if ((1 << 30) & undoMove){
         this->board->putPieceEnum(move[2], move[3], capturedPiece);

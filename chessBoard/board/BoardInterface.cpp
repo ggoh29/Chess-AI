@@ -51,6 +51,14 @@ void BoardInterface::printMove(int move){
     std::cout << std::endl;
 }
 
+void BoardInterface::printMovesSoFar(){
+    for (auto move = moveslist->begin(); move != moveslist->end(); move ++){
+        board->printMove(*move);
+        std::cout << " ";
+    }
+    std::cout << std::endl;
+}
+
 std::vector<int>* BoardInterface::getMoves(){
     return this->getMoves(this->turn);
 }
