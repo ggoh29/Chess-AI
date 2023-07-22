@@ -1,34 +1,43 @@
-#include "./board/Board.h"
+#include "./board/BoardInterface.h"
+#include "./players/Player.h"
+#include "./players/HumanPlayer.h"
+#include <vector>
 
-Piece* b = new Piece();
+bool checkIfOver(BoardInterface* interface, std::vector<int>* validMoves){
+    return validMoves->empty();
+}
 
-Pawn* wp = new Pawn(1);
-Bishop* wb = new Bishop(1);
-Knight* wkn = new Knight(1);
-Rook* wr = new Rook(1);
-Queen* wq = new Queen(1);
-King* wkg = new King(1);
+int finalScore(BoardInterface* interface, bool colour){
+    return interface->getWinner(colour);
+}
 
-Pawn* bp = new Pawn(0);
-Bishop* bb = new Bishop(0);
-Knight* bkn = new Knight(0);
-Rook* br = new Rook(0);
-Queen* bq = new Queen(0);
-King* bkg = new King(0);
+int getPlayerMove(BoardInterface* interface, Player* player, bool turn){
+    std::vector<int>* validMoves = interface -> getValidMoves(turn);
+    bool gameOver = checkIfOver(interface, validMoves);
+    if(gameOver){
+        delete validMoves;
+        return -1;
+    }
+    int move = player->move(interface, validMoves);
+    delete validMoves;
+    return move;
+}
 
 int main(){
-    std::array<std::array<Piece*, 8>, 8> chessBoard = {{
-        {br , bkn, bb , bq, bkg , bb , bkn, br }, 
-        {bp , bp , bp , bp , bp , bp , bp , bp },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {b  , b  , b  , b  , b  , b  , b  , b  },
-        {wp , wp , wp , wp , wp , wp , wp , wp },
-        {wr , wkn, wb , wq, wkg , wb , wkn, wr }
-    }};
-    Board* b = new Board(chessBoard);
-    std::string encoding = b->getString();
-    Board* b2 = new Board(encoding);
-    b2->printBoard();
+    BoardInterface* interface = new BoardInterface();
+    Player* playerWhite = new HumanPlayer(1);
+    Player* playerBlack = new HumanPlayer(0);
+    bool turn = true;
+    int playerMove = 0;
+    while (playerMove != -1){   
+        std::cout << turn << std::endl;
+        int playerMove = getPlayerMove(interface, (turn ? playerWhite : playerBlack), turn);
+        if (playerMove == -1){
+            break;
+        }
+        interface -> makeMove(playerMove);
+        turn =  1 - turn;
+    }
+    interface -> printBoard();
+    std::cout << (turn ? "Black" : "White") << " Won, score " << finalScore(interface, turn)  << std::endl;
 };  

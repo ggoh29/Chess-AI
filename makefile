@@ -1,1 +1,1 @@
-g++ -Wno-multichar chessBoard/board/*.cpp chessBoard/main.cpp chessBoard/pieces/*.cpp chessBoard/moves/*.cpp  -o main && ./main 
+g++ -Wno-multichar chessBoard/board/*.cpp chessBoard/main.cpp chessBoard/pieces/*.cpp chessBoard/moves/*.cpp chessBoard/players/*.cpp -o main && ./main 

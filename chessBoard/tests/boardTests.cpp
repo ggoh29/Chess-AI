@@ -668,7 +668,7 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all(3, 8902);
     // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
     // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
-    correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
+    // correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, true);

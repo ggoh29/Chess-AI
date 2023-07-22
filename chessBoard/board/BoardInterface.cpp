@@ -59,6 +59,28 @@ void BoardInterface::printMovesSoFar(){
     std::cout << std::endl;
 }
 
+int BoardInterface::getWinner(bool turn){
+    int i_king, j_king;
+    bool b = false;
+    for (i_king = 0 ; i_king < 8; i_king++) {
+        for (j_king = 0; j_king < 8; j_king++) {
+            if (board->pieceEnumAtLocation(i_king, j_king) == (turn ?  6 : 14)){
+                b = true;
+                break;
+            };
+        }
+        if (b){
+            break;
+        }
+    }
+    bool isValid = board->isValidPosforKing(i_king, j_king, turn);
+    if (isValid){
+        return 0;
+    } else {
+        return (turn ? -1 : 1);
+    }
+}
+
 std::vector<int>* BoardInterface::getMoves(){
     return this->getMoves(this->turn);
 }

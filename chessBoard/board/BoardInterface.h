@@ -20,6 +20,7 @@ class BoardInterface{
     void undoMove(bool turn);
     void printMovesSoFar();
     void printMove(int move);
+    int getWinner(bool turn);
     std::vector<int>* getMoves();
     std::vector<int>* getMoves(bool turn);
     std::vector<int>* getValidMoves();

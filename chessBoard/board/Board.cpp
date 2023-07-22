@@ -251,7 +251,7 @@ void Board::printMove(int move){
 }
 
 void Board::printBoard(){
-    //std::cout << "\033c";
+    std::cout << "\033c";
     std::cout <<  "  +---+---+---+---+---+---+---+---+" << std::endl;
     for (int i = 0 ; i < 8; i++) {
         std::cout << (8 - i) << " ";
