@@ -5,8 +5,8 @@
 #include <array>
 
 class BoardHash{
-  static int index[16];
-  static std::array<unsigned long, 64 * 13> hashTable;
+  static const int index[16];
+  static const std::array<unsigned long, 64 * 13> hashTable;
   public:
     BoardHash();
     unsigned long getHash(BoardRepr* board);

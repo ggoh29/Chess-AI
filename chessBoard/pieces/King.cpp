@@ -1,5 +1,7 @@
 #include "King.h"
 
+static const int directions[8][2] = {{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {-1, -1}};
+
 King::King(bool colour):colour(colour),mv(new Move()){}
 
 int King::pieceEnum(){
@@ -13,7 +15,6 @@ std::string King::pieceAscii(){
 
 std::vector<int>* King::getMoves(int i, int j, BoardRepr* board, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
-    int directions[8][2] = {{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {-1, -1}};
     for (auto dir : directions){
         int x = i + dir[0];
         int y = j + dir[1];

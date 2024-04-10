@@ -1,6 +1,8 @@
 #include "Rook.h"
 #include <iostream>
 
+static const int directions[4][2] = {{+1, 0}, {-1, 0}, {0, +1}, {0, -1}};
+
 Rook::Rook(bool colour) : colour(colour), mv(new Move()){}
 
 int Rook::pieceEnum(){
@@ -13,7 +15,6 @@ std::string Rook::pieceAscii(){
 
 std::vector<int>* Rook::getMoves(int i, int j, BoardRepr* board, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
-    int directions[4][2] = {{+1, 0}, {-1, 0}, {0, +1}, {0, -1}};
     for (auto direction : directions){
         int xx = i + direction[0];
         int yy = j + direction[1];

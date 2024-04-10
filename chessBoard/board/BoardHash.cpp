@@ -2,7 +2,7 @@
 
 BoardHash::BoardHash(){};
 
-int BoardHash::index[16] = {0, 1, 2, 3, 4, 5, 6, 0, 0, 7, 8, 9, 10, 11, 12, 0};
+const int BoardHash::index[16] = {0, 1, 2, 3, 4, 5, 6, 0, 0, 7, 8, 9, 10, 11, 12, 0};
 
 unsigned long BoardHash::getHash(BoardRepr* board){
     long value = 0;
@@ -17,7 +17,7 @@ unsigned long BoardHash::getHash(BoardRepr* board){
 }
 
 
-std::array<unsigned long, 64 * 13> BoardHash::hashTable = {
+const std::array<unsigned long, 64 * 13> BoardHash::hashTable = {
 0b0000000010110111000000010100100000111010000000011110011000000011,
 0b1110001110000101110111100101111010001010110111000001100100000100,
 0b1101001010000110001111010010010111001100101011100011110010100110,

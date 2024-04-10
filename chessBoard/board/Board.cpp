@@ -1,5 +1,8 @@
 #include "Board.h"
 
+static const int knight_directions[8][2] = {{+1, +2}, {+1, -2}, {+2, -1}, {+2, +1}, {-1, +2}, {-1, -2}, {-2, -1}, {-2, +1}};
+static const int king_directions[8][2] = {{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {-1, -1}};
+static const int rook_directions[4][2] = {{+1, 0}, {-1, 0}, {0, +1}, {0, -1}};
 
 Board::Board() 
 : Board(std::array<Piece*, 64> (
@@ -81,9 +84,16 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
     if (i_king < 0 || i_king > 7 || j_king < 0 || j_king > 7){
         return false;
     }
+    // no knight check
+    for (auto direction : knight_directions){
+        int x = i_king  + direction[0];
+        int y = j_king  + direction[1];
+        if ((0 <= x) && (x < 8) && (0 <= y) && (y < 8) && (this->board->getPieceEnumAt(x, y) == (turn ? 11 : 3))){
+            return false;
+        }
+    }
     // No king and pawn check
-    int directions1[8][2] = {{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {-1, -1}};
-    for (auto dir : directions1){
+    for (auto dir : king_directions){
         int x = i_king + dir[0];
         int y = j_king + dir[1];
         if ((0 <= x) && (x < 8) && (0 <= y) && (y < 8)){
@@ -97,31 +107,18 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
             }
         }
     }
-    // no knight check
-    for (int x_dir : {-1, +1}){
-        for (int y_dir : {-1, +1}){
-            for (int x_mag : {1, 2}){
-                for (int y_mag : {1, 2}){
-                    int x = i_king + x_mag * x_dir;
-                    int y = j_king + y_mag * y_dir;
-                    if ((x_mag != y_mag) && (0 <= x) && (x < 8) && (0 <= y) && (y < 8) && (this->board->getPieceEnumAt(x, y) == (turn ? 11 : 3))){
-                        return false;
-                    }
-                }
-            }
-        }
-    }
     // no rook and queen check
-    int directions2[4][2] = {{+1, 0}, {-1, 0}, {0, +1}, {0, -1}};
-    for (auto direction : directions2){
+    for (auto direction : rook_directions){
         int xx = i_king + direction[0];
         int yy = j_king + direction[1];
         for (;(0 <= xx) && (xx < 8) && (0 <= yy) && (yy < 8);){
             int e = this->board->getPieceEnumAt(xx, yy);
-            if ((e == (turn ? 12 : 4)) || (e == (turn ? 13 : 5))){
-                return false;
-            } else if (e != 0){
-                break;
+            if (e != 0){
+                if ((e == (turn ? 12 : 4)) || (e == (turn ? 13 : 5))){
+                    return false;
+                } else {
+                    break;
+                }
             }
             xx += direction[0];
             yy += direction[1];
@@ -134,10 +131,12 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
             int yy = y ? j_king + 1 : j_king - 1;
             while ((0 <= xx) && (xx < 8) && (0 <= yy) && (yy < 8)){
                 int e = this->board->getPieceEnumAt(xx, yy);
-                if ((e == (turn ? 10 : 2)) || (e == (turn ? 13 : 5))){
-                    return false;
-                } else if (e != 0) {
-                    break;
+                if (e != 0) {
+                    if ((e == (turn ? 10 : 2)) || (e == (turn ? 13 : 5))){
+                        return false;
+                    } else {
+                        break;
+                    }
                 }
                 xx = x ? xx + 1 : xx - 1;
                 yy = y ? yy + 1 : yy - 1;

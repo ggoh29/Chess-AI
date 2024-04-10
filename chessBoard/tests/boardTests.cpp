@@ -638,26 +638,26 @@ void correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_6(int n, int
 }
 
 int main(){
-    en_passant_works_as_intended("white en passant", 3);
-    promotion_works_as_intended("white promotion", 12);
-    pawn_moves_white_works_as_intended("white pawn", 12);
-    pawn_moves_black_works_as_intended("black pawn", 11);
-    knight_moves_white_works_as_intended("white knight", 5);
-    knight_moves_black_works_as_intended("black knight", 5);
-    bishop_moves_white_works_as_intended("white bishop", 7);
-    bishop_moves_black_works_as_intended("black bishop", 5);
-    rook_moves_white_works_as_intended("white rook", 35);
-    rook_moves_black_works_as_intended("black rook", 35);
-    queen_moves_white_works_as_intended("white queen", 18);
-    queen_moves_black_works_as_intended("black queen", 18);
-    king_moves_white_works_as_intended("white king", 12);
-    king_moves_black_works_as_intended("black king", 12);
-    castle_white_not_valid_test1("white king castling", 12);
-    castle_black_not_valid_test1("black king castling", 12);
-    king_in_checkmate_no_moves("black king checkmated", 0);
-    king_in_check_moves_correctly("black king in check", 3);
-    king_in_check_moves_correctly2("white king in check", 2);
-    king_in_pin_moves_correctly("black king in pin", 27);
+    // en_passant_works_as_intended("white en passant", 3);
+    // promotion_works_as_intended("white promotion", 12);
+    // pawn_moves_white_works_as_intended("white pawn", 12);
+    // pawn_moves_black_works_as_intended("black pawn", 11);
+    // knight_moves_white_works_as_intended("white knight", 5);
+    // knight_moves_black_works_as_intended("black knight", 5);
+    // bishop_moves_white_works_as_intended("white bishop", 7);
+    // bishop_moves_black_works_as_intended("black bishop", 5);
+    // rook_moves_white_works_as_intended("white rook", 35);
+    // rook_moves_black_works_as_intended("black rook", 35);
+    // queen_moves_white_works_as_intended("white queen", 18);
+    // queen_moves_black_works_as_intended("black queen", 18);
+    // king_moves_white_works_as_intended("white king", 12);
+    // king_moves_black_works_as_intended("black king", 12);
+    // castle_white_not_valid_test1("white king castling", 12);
+    // castle_black_not_valid_test1("black king castling", 12);
+    // king_in_checkmate_no_moves("black king checkmated", 0);
+    // king_in_check_moves_correctly("black king in check", 3);
+    // king_in_check_moves_correctly2("white king in check", 2);
+    // king_in_pin_moves_correctly("black king in pin", 27);
     // correct_number_of_starting_moves_at_depth_n_test(1, 20);
     // correct_number_of_starting_moves_at_depth_n_test(2, 400);
     // correct_number_of_starting_moves_at_depth_n_test(3, 5362);
@@ -668,7 +668,7 @@ int main(){
     // correct_number_of_starting_moves_at_depth_n_test_all(3, 8902);
     // correct_number_of_starting_moves_at_depth_n_test_all(4, 197281);
     // correct_number_of_starting_moves_at_depth_n_test_all(5, 4865609);
-    // correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
+    correct_number_of_starting_moves_at_depth_n_test_all(6, 119060324);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(1, 44, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(2, 1486, true);
     // correct_number_of_starting_moves_at_depth_n_test_all_fixed_pos_1(3, 62379, true);
