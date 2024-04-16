@@ -1,4 +1,5 @@
 #include "Board.h"
+#include <stdio.h>
 
 static const int knight_directions[8][2] = {{+1, +2}, {+1, -2}, {+2, -1}, {+2, +1}, {-1, +2}, {-1, -2}, {-2, -1}, {-2, +1}};
 static const int king_directions[8][2] = {{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {-1, -1}};
@@ -37,7 +38,8 @@ bool wr2HasMoved
     br2HasMoved{br2HasMoved},
     wkgHasMoved{wkgHasMoved},
     wr1HasMoved{wr1HasMoved},
-    wr2HasMoved{wr2HasMoved}
+    wr2HasMoved{wr2HasMoved},
+    hash_number{0}
 {
 std::array<int, 8> boardRepr = std::array<int, 8>({0, 0, 0, 0, 0, 0, 0, 0});
 for (int i = 0 ; i < 8; i++){
@@ -47,8 +49,8 @@ for (int i = 0 ; i < 8; i++){
         boardRepr[i] = boardRepr[i] ^ (e & 15) << (4 * j);
     }
 }
-
 this->board = new BoardRepr(boardRepr);
+this->hash_number = hash->getHash(this->board);
 }
 
 bool Board::pieceTaken(){
@@ -151,6 +153,10 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
 }
 
 std::vector<int>* Board::getMoves(bool turn, int previousMove){
+    unsigned long turn_hash = hash->getTurnHash(this->hash_number, turn);
+    if (this->move_map.count(turn_hash) != 0){
+        return this->move_map[turn_hash];
+    }
     int mask = 8;
     std::vector<int>* finalArray = new std::vector<int>();
     for (int i = 0 ; i < 8; i++) {
@@ -164,37 +170,80 @@ std::vector<int>* Board::getMoves(bool turn, int previousMove){
             }
         }
     };
+    this->move_map.insert({ turn_hash, finalArray }); 
     return finalArray;
 };
 
 
-void Board::makeMove(bool turn, int mv){
+void Board::makeMove(bool turn, int mv){\
+    unsigned long cur_hash = this->hash_number;
     Move moveDocoder = Move();
     std::array<int, 4> move = moveDocoder.decodeMove(mv);
     int king = (turn ? 7 : 0);
     if (long_castle & mv){
-        this->board->putPieceEnum(king, 2, this->board->getPieceEnumAt(king, 4));
-        this->board->putPieceEnum(king, 3, this->board->getPieceEnumAt(king, 0));
+        int king_enum = this->board->getPieceEnumAt(king, 4);
+        int rook_enum = this->board->getPieceEnumAt(king, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 2, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 3, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 2, king_enum);
+        cur_hash = hash->updateHash(cur_hash, king, 3, rook_enum);
+        cur_hash = hash->updateHash(cur_hash, king, 4, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 0, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 4, king_enum);
+        cur_hash = hash->updateHash(cur_hash, king, 0, rook_enum);
+
+        this->board->putPieceEnum(king, 2, king_enum);
+        this->board->putPieceEnum(king, 3, rook_enum);
         this->board->putPieceEnum(king, 4, 0);
         this->board->putPieceEnum(king, 0, 0);
+
         (turn ? wkgHasMoved : bkgHasMoved) = true;
         (turn ? wr1HasMoved : br1HasMoved) = true;
     } else if (short_castle & mv){
-        this->board->putPieceEnum(king, 6, this->board->getPieceEnumAt(king, 4));
-        this->board->putPieceEnum(king, 5, this->board->getPieceEnumAt(king, 7));
+        int king_enum = this->board->getPieceEnumAt(king, 4);
+        int rook_enum = this->board->getPieceEnumAt(king, 7);
+        cur_hash = hash->updateHash(cur_hash, king, 6, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 5, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 6, king_enum);
+        cur_hash = hash->updateHash(cur_hash, king, 5, rook_enum);
+        cur_hash = hash->updateHash(cur_hash, king, 4, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 7, 0);
+        cur_hash = hash->updateHash(cur_hash, king, 4, king_enum);
+        cur_hash = hash->updateHash(cur_hash, king, 7, rook_enum);
+
+        this->board->putPieceEnum(king, 6, king_enum);
+        this->board->putPieceEnum(king, 5, rook_enum);
         this->board->putPieceEnum(king, 4, 0);
         this->board->putPieceEnum(king, 7, 0);
+
         (turn ? wkgHasMoved : bkgHasMoved) = true;
         (turn ? wr2HasMoved : br2HasMoved) = true;
     } else if (enpassant  & mv){
-        this->board->putPieceEnum(move[2], move[3], this->board->getPieceEnumAt(move[0], move[1]));
+        int pawn_enum = this->board->getPieceEnumAt(move[0], move[1]);
+        cur_hash = hash->updateHash(cur_hash, move[2], move[3], pawn_enum );
+        cur_hash = hash->updateHash(cur_hash, move[2], move[3], 0);
+        cur_hash = hash->updateHash(cur_hash, (move[2] + (turn ? 1 : -1)), move[3], 0);
+        cur_hash = hash->updateHash(cur_hash,(move[2] + (turn ? 1 : -1)), move[3], this->board->getPieceEnumAt((move[2] + (turn ? 1 : -1)), move[3]));
+        cur_hash = hash->updateHash(cur_hash, move[0], move[1], 0);
+        cur_hash = hash->updateHash(cur_hash, move[0], move[1], pawn_enum );
+
+        this->board->putPieceEnum(move[2], move[3], pawn_enum );
         this->board->putPieceEnum((move[2] + (turn ? 1 : -1)), move[3], 0);
         this->board->putPieceEnum(move[0], move[1], 0);
+        
     } else if (promotion & mv){
         int piece = moveDocoder.decodePromotion(mv);
+        cur_hash = hash->updateHash(cur_hash, move[2], move[3], 0);
+        cur_hash = hash->updateHash(cur_hash, move[2], move[3], piece);
+        cur_hash = hash->updateHash(cur_hash, move[0], move[1], 0);
+        cur_hash = hash->updateHash(cur_hash, move[0], move[1], this->board->getPieceEnumAt(move[0], move[1]));
         this->board->putPieceEnum(move[2], move[3], piece);
         this->board->putPieceEnum(move[0], move[1], 0);
     } else {
+        cur_hash = hash->updateHash(cur_hash, move[2], move[3], 0);
+        cur_hash = hash->updateHash(cur_hash, move[2], move[3], this->board->getPieceEnumAt(move[2], move[3]));
+        cur_hash = hash->updateHash(cur_hash, move[0], move[1], 0);
+        cur_hash = hash->updateHash(cur_hash, move[0], move[1], this->board->getPieceEnumAt(move[0], move[1]));
         this->board->putPieceEnum(move[2], move[3], this->board->getPieceEnumAt(move[0], move[1]));
         this->board->putPieceEnum(move[0], move[1], 0);
     }
@@ -207,6 +256,7 @@ void Board::makeMove(bool turn, int mv){
     if ((move[0] == (turn ? 7 : 0)  && move[1] == 4) || (move[2] == (turn ? 7 : 0) && move[3] == 4)){
         (turn ? wkgHasMoved : bkgHasMoved) = true;
     }
+    this->hash_number = cur_hash;
 }
 
 void Board::undoMove(bool turn, int undoMove, int castlingState){

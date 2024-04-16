@@ -10,6 +10,8 @@ class BoardHash{
   public:
     BoardHash();
     unsigned long getHash(BoardRepr* board);
+    unsigned long getTurnHash(unsigned long hash, bool turn);
+    unsigned long updateHash(unsigned long hash, int i, int j, int piece_enum);
 };
 
 #endif

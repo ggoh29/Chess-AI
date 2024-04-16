@@ -16,6 +16,7 @@
 #include <vector>
 #include <algorithm>
 #include <cstring>
+#include <map>
 
 
 class Board{
@@ -49,6 +50,9 @@ class Board{
     bool wkgHasMoved;
     bool wr1HasMoved;
     bool wr2HasMoved;
+
+    unsigned long hash_number;
+    std::map<unsigned long, std::vector<int>*> move_map;
 
     public:
 

@@ -3,6 +3,8 @@
 BoardHash::BoardHash(){};
 
 const int BoardHash::index[16] = {0, 1, 2, 3, 4, 5, 6, 0, 0, 7, 8, 9, 10, 11, 12, 0};
+static const unsigned long black_hash = 0b0100010110001110011110110011110110111110100001011000000001101011;
+static const unsigned long white_hash = 0b0010011010100101101111000100011100010100000010100111101100101011;
 
 unsigned long BoardHash::getHash(BoardRepr* board){
     long value = 0;
@@ -16,6 +18,18 @@ unsigned long BoardHash::getHash(BoardRepr* board){
     return value;
 }
 
+unsigned long BoardHash::getTurnHash(unsigned long hash, bool turn){
+    if (turn){
+        return hash ^ white_hash;
+    } else {
+        return hash ^ black_hash;
+    }
+}
+
+unsigned long BoardHash::updateHash(unsigned long hash, int i, int j, int piece_enum){
+    hash ^= hashTable[(i * 8 + j) + (64 * piece_enum)];
+    return hash;
+}
 
 const std::array<unsigned long, 64 * 13> BoardHash::hashTable = {
 0b0000000010110111000000010100100000111010000000011110011000000011,
