@@ -3,6 +3,10 @@
 static const int knight_directions[8][2] = {{+1, +2}, {+1, -2}, {+2, -1}, {+2, +1}, {-1, +2}, {-1, -2}, {-2, -1}, {-2, +1}};
 static const int king_directions[8][2] = {{1, 0}, {1, 1}, {1, -1}, {0, 1}, {0, -1}, {-1, 0}, {-1, 1}, {-1, -1}};
 static const int rook_directions[4][2] = {{+1, 0}, {-1, 0}, {0, +1}, {0, -1}};
+static const int long_castle = 1 << 28;
+static const int short_castle = 1 << 29;
+static const int promotion = 1 << 30;
+static const int enpassant = 1 << 31;
 
 Board::Board() 
 : Board(std::array<Piece*, 64> (
@@ -168,25 +172,25 @@ void Board::makeMove(bool turn, int mv){
     Move moveDocoder = Move();
     std::array<int, 4> move = moveDocoder.decodeMove(mv);
     int king = (turn ? 7 : 0);
-    if ((1 << 28) & mv){
+    if (long_castle & mv){
         this->board->putPieceEnum(king, 2, this->board->getPieceEnumAt(king, 4));
         this->board->putPieceEnum(king, 3, this->board->getPieceEnumAt(king, 0));
         this->board->putPieceEnum(king, 4, 0);
         this->board->putPieceEnum(king, 0, 0);
         (turn ? wkgHasMoved : bkgHasMoved) = true;
         (turn ? wr1HasMoved : br1HasMoved) = true;
-    } else if ((1 << 29) & mv){
+    } else if (short_castle & mv){
         this->board->putPieceEnum(king, 6, this->board->getPieceEnumAt(king, 4));
         this->board->putPieceEnum(king, 5, this->board->getPieceEnumAt(king, 7));
         this->board->putPieceEnum(king, 4, 0);
         this->board->putPieceEnum(king, 7, 0);
         (turn ? wkgHasMoved : bkgHasMoved) = true;
         (turn ? wr2HasMoved : br2HasMoved) = true;
-    } else if ((1 << 31) & mv){
+    } else if (enpassant  & mv){
         this->board->putPieceEnum(move[2], move[3], this->board->getPieceEnumAt(move[0], move[1]));
         this->board->putPieceEnum((move[2] + (turn ? 1 : -1)), move[3], 0);
         this->board->putPieceEnum(move[0], move[1], 0);
-    } else if ((1 << 30) & mv){
+    } else if (promotion & mv){
         int piece = moveDocoder.decodePromotion(mv);
         this->board->putPieceEnum(move[2], move[3], piece);
         this->board->putPieceEnum(move[0], move[1], 0);
@@ -211,21 +215,21 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
     int capturedPiece = (undoMove >> 16) & 0b1111;
     int king = (turn ? 7 : 0);
     std::array<int, 4> move = moveDocoder.decodeMove(undoMove);
-    if ((1 << 28) & undoMove){
+    if (long_castle & undoMove){
         this->board->putPieceEnum(king, 4, this->board->getPieceEnumAt(king, 2));
         this->board->putPieceEnum(king, 0, this->board->getPieceEnumAt(king, 3));
         this->board->putPieceEnum(king, 2, 0);
         this->board->putPieceEnum(king, 3, 0);
-    } else if ((1 << 29) & undoMove){
+    } else if (short_castle & undoMove){
         this->board->putPieceEnum(king, 4, this->board->getPieceEnumAt(king, 6));
         this->board->putPieceEnum(king, 7, this->board->getPieceEnumAt(king, 5));
         this->board->putPieceEnum(king, 6, 0);
         this->board->putPieceEnum(king, 5, 0);
-    } else if ((1 << 31) & undoMove){
+    } else if (enpassant  & undoMove){
         this->board->putPieceEnum(move[0], move[1], this->board->getPieceEnumAt(move[2], move[3]));
         this->board->putPieceEnum((move[2] + (turn ? 1 : -1)), move[3], (turn ? 9 : 1));
         this->board->putPieceEnum(move[2], move[3], 0);
-    } else if ((1 << 30) & undoMove){
+    } else if (promotion & undoMove){
         this->board->putPieceEnum(move[2], move[3], capturedPiece);
         this->board->putPieceEnum(move[0], move[1], turn ? 1 : 9);
     } else {
@@ -237,11 +241,11 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
 void Board::printMove(int move){
     Move mvDecoder = Move();
     std::array<int, 4> mv = mvDecoder.decodeMove(move);
-    if ((1 << 28) & move){
+    if (long_castle & move){
         std::cout << "O-O-O";
-    } else if ((1 << 29) & move){
+    } else if (short_castle & move){
         std::cout << "O-O";
-    } else if ((1 << 30) & move){
+    } else if (promotion & move){
         int piece = mvDecoder.decodePromotion(move);
         std::cout << charlist[mv[1]] << 8 - mv[0] << "-" << charlist[mv[3]] << 8 - mv[2] << " " << piecelist[piece];
     } else {

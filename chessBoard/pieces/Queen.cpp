@@ -21,7 +21,7 @@ std::vector<int>* Queen::getMoves(int i, int j, BoardRepr* board, int previousMo
             }
             for (;0 <= xx && xx < 8 && 0 <= yy && yy < 8;){
                 bool cond = !isSameTeam(colour, board->getPieceEnumAt(xx, yy));
-                if (board->getPieceEnumAt(xx, yy) == 0 | cond){
+                if (cond | board->getPieceEnumAt(xx, yy) == 0){
                     std::array<int, 4> move = {i, j, xx, yy};
                     int moveEncoded = mv->encodeMove(move);
                     moves->push_back(moveEncoded);
