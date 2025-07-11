@@ -10,7 +10,7 @@ class Queen:public Piece{
     Queen(bool colour);
     int pieceEnum();
     std::string pieceAscii();
-    std::vector<int>* getMoves(int i, int j, BoardRepr* board, int previousMove);
+    std::vector<int>* getMoves(char i, char j, BoardRepr* board, int previousMove);
 };
 
 #endif

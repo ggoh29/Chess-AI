@@ -35,22 +35,22 @@ bool wr2HasMoved
     wr1HasMoved{wr1HasMoved},
     wr2HasMoved{wr2HasMoved}
 {
-std::array<int, 8> boardRepr = std::array<int, 8>({0, 0, 0, 0, 0, 0, 0, 0});
-for (int i = 0 ; i < 8; i++){
-    for (int j = 0; j < 8; j++) {
-        Piece* piece = chessBoard[i * 8 + j];
-        char e = piece -> pieceEnum();
-        boardRepr[i] = boardRepr[i] ^ (e & 15) << (4 * j);
+    std::array<int, 8> boardRepr = std::array<int, 8>({0, 0, 0, 0, 0, 0, 0, 0});
+    for (char i = 0 ; i < 8; i++){
+        for (char j = 0; j < 8; j++) {
+            Piece* piece = chessBoard[i * 8 + j];
+            char e = piece -> pieceEnum();
+            boardRepr[i] = boardRepr[i] ^ (e & 15) << (4 * j);
+        }
     }
-}
 
-this->board = new BoardRepr(boardRepr);
+    this->board = new BoardRepr(boardRepr);
 }
 
 bool Board::pieceTaken(){
-    int counter = 0;
-    for (int i = 0; i < 8; i ++){
-        for (int j = 0; j < 8; j++){
+    char counter = 0;
+    for (char i = 0; i < 8; i ++){
+        for (char j = 0; j < 8; j++){
             if (this->board->getPieceEnumAt(i, j) != 0){
                 counter ++;
             }
@@ -147,13 +147,13 @@ bool Board::isValidPosforKing(int i_king, int j_king, bool turn){
 }
 
 std::vector<int>* Board::getMoves(bool turn, int previousMove){
-    int mask = 8;
+    char mask = 8;
     std::vector<int>* finalArray = new std::vector<int>();
-    for (int i = 0 ; i < 8; i++) {
-        for (int j = 0; j < 8; j++) {
+    for (char i = 0 ; i < 8; i++) {
+        for (char j = 0; j < 8; j++) {
             int encoding = this->board->getPieceEnumAt(i, j);
             Piece* piece = this->plist[encoding];
-            if (((mask ^ encoding) >> 3) == turn){
+            if ((encoding != 0) && (((mask ^ encoding) >> 3) == turn)){
                 std::vector<int>* moves = piece -> getMoves(i, j, board, previousMove);
                 finalArray->insert(finalArray->end(), moves->begin(), moves->end());
                 delete moves;
@@ -166,7 +166,7 @@ std::vector<int>* Board::getMoves(bool turn, int previousMove){
 
 void Board::makeMove(bool turn, int mv){
     Move moveDocoder = Move();
-    std::array<int, 4> move = moveDocoder.decodeMove(mv);
+    std::array<char, 4> move = moveDocoder.decodeMove(mv);
     int king = (turn ? 7 : 0);
     if ((1 << 28) & mv){
         this->board->putPieceEnum(king, 2, this->board->getPieceEnumAt(king, 4));
@@ -210,7 +210,7 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
     Move moveDocoder =  Move();
     int capturedPiece = (undoMove >> 16) & 0b1111;
     int king = (turn ? 7 : 0);
-    std::array<int, 4> move = moveDocoder.decodeMove(undoMove);
+    std::array<char, 4> move = moveDocoder.decodeMove(undoMove);
     if ((1 << 28) & undoMove){
         this->board->putPieceEnum(king, 4, this->board->getPieceEnumAt(king, 2));
         this->board->putPieceEnum(king, 0, this->board->getPieceEnumAt(king, 3));
@@ -236,7 +236,7 @@ void Board::undoMove(bool turn, int undoMove, int castlingState){
 
 void Board::printMove(int move){
     Move mvDecoder = Move();
-    std::array<int, 4> mv = mvDecoder.decodeMove(move);
+    std::array<char, 4> mv = mvDecoder.decodeMove(move);
     if ((1 << 28) & move){
         std::cout << "O-O-O";
     } else if ((1 << 29) & move){
@@ -250,11 +250,11 @@ void Board::printMove(int move){
 }
 
 void Board::printBoard(){
-    std::cout << "\033c";
+    // std::cout << "\033c";
     std::cout <<  "  +---+---+---+---+---+---+---+---+" << std::endl;
-    for (int i = 0 ; i < 8; i++) {
+    for (char i = 0 ; i < 8; i++) {
         std::cout << (8 - i) << " ";
-        for (int j = 0; j < 8; j++) {
+        for (char j = 0; j < 8; j++) {
             std::cout << "|";
             int piece = this->board->getPieceEnumAt(i, j);
             std::cout << " " << plist[piece] -> pieceAscii() << " ";

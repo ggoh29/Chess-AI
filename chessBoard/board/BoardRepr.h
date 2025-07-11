@@ -8,8 +8,8 @@ class BoardRepr{
   std::array<int, 8> boardRepr;
   public:
     BoardRepr(std::array<int, 8> boardRepr);
-    int getPieceEnumAt(int x, int y);
-    void putPieceEnum(int x, int y, int e);
+    char getPieceEnumAt(char x, char y);
+    void putPieceEnum(char x, char y, char e);
 };
 
 #endif

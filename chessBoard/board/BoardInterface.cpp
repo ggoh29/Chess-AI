@@ -21,7 +21,7 @@ void BoardInterface::makeMove(int move){
 
 void BoardInterface::makeMove(bool turn, int move){
     Move moveDocoder = Move();
-    std::array<int, 4> mv = moveDocoder.decodeMove(move);
+    std::array<char, 4> mv = moveDocoder.decodeMove(move);
     int capturedPiece = board->pieceEnumAtLocation(mv[2], mv[3]);
     int castlingState = board->getCastlingState();
     int undoMove = moveDocoder.encodeUndoMove(move, capturedPiece);
@@ -118,7 +118,7 @@ std::vector<int>* BoardInterface::getValidMoves(bool turn){
     }
     Move* moveDocoder = new Move();
     moves->erase(std::remove_if(moves->begin(), moves->end(), [this, turn, moveDocoder, i_king, j_king](int mv) {
-        std::array<int, 4> move = moveDocoder->decodeMove(mv);
+        std::array<char, 4> move = moveDocoder->decodeMove(mv);
         int capturedPiece = board->pieceEnumAtLocation(move[2], move[3]);
         int undoMove = moveDocoder->encodeUndoMove(mv, capturedPiece);
         int castlingState = board->getCastlingState();

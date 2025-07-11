@@ -10,19 +10,19 @@ std::string Queen::pieceAscii(){
         return colour ? "♛" : "♕";
 };
 
-std::vector<int>* Queen::getMoves(int i, int j, BoardRepr* board, int previousMove){
+std::vector<int>* Queen::getMoves(char i, char j, BoardRepr* board, int previousMove){
     std::vector<int> *moves = new std::vector<int>();
-    for (int x = -1; x <= 1; x ++){
-        for (int y = -1; y <= 1; y++){
-            int xx = i + x;
-            int yy = j + y;
+    for (char x = -1; x <= 1; x ++){
+        for (char y = -1; y <= 1; y++){
+            char xx = i + x;
+            char yy = j + y;
             if (x == 0 && y == 0){
                 continue;
             }
             for (;0 <= xx && xx < 8 && 0 <= yy && yy < 8;){
                 bool cond = !isSameTeam(colour, board->getPieceEnumAt(xx, yy));
                 if (board->getPieceEnumAt(xx, yy) == 0 | cond){
-                    std::array<int, 4> move = {i, j, xx, yy};
+                    std::array<char, 4> move = {i, j, xx, yy};
                     int moveEncoded = mv->encodeMove(move);
                     moves->push_back(moveEncoded);
                     if (cond){

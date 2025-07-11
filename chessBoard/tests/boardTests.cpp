@@ -53,7 +53,7 @@ void en_passant_works_as_intended(std::string test, int mvs){
      b  , b  , b  , b  , b  , b  , b  , b  
     }};
     Board* b = new Board(chessBoard);
-    std::array<int, 4> move = {1, 4, 3, 4};
+    std::array<char, 4> move = {1, 4, 3, 4};
     int encodedMove = mover->encodeMove(move);
     std::vector<int>* moves = b->getMoves(1, encodedMove);
     int movesSize = moves->size();
