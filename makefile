@@ -6,5 +6,6 @@ cmake --build . --config Release ; ./main
 rm *.a
 rm *Cache.txt
 rm *.cmake
+rm .main
 rm -rf CMakeFiles
 shopt -u extglob
