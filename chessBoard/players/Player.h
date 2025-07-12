@@ -8,6 +8,7 @@ class Player{
     Player(){};
     bool getColour(){return colour;};
     virtual int move(BoardInterface* interface, std::vector<int>* validMoves) = 0;
+    virtual void winner(bool winner) = 0;
 };
 
 #endif
